@@ -1,0 +1,35 @@
+{
+  "originalSourceHashes": {
+    "SCRANTIC.SCR": "7811b526b36bba2f08326d7a680f2f063190b4278e5a36393fde5a02080b0262",
+    "RESOURCE.MAP": "3d9ec330aab96bbe5a44ce34f5945703862e82b195088590b7adfef5d7345da7",
+    "RESOURCE.001": "df9c2213f7c0abacf4e302cb53a476f9f220579c07ba350b167e351eed548eae"
+  },
+  "referenceImages": [
+    "BACKGRND.BMP extracted contact sheet",
+    "JOHNWALK.BMP extracted contact sheet",
+    "locally rendered original fishing scene"
+  ],
+  "generation": "Built-in image generation tool; prompts in art/PROMPTS.md",
+  "audio": {
+    "4.wav": "Original resource WAVESFX4; MJFISH.TTM frames 36 and 41",
+    "14.wav": "Original resource WAVESFX16; MJFISH.TTM frame 38"
+  },
+  "art": {
+    "island": {
+      "file": "island.png",
+      "sha256": "c3ec362ae25b00684e16226da4c2eb57ffab5cd803e6b735325a2d0728ddf437"
+    },
+    "palm": {
+      "file": "palm.png",
+      "sha256": "6f8aa8ff83893f4a1890831d5fdc35d72efbc80c7633e599b485889c079e74eb"
+    },
+    "walk": {
+      "file": "johnny-walk.png",
+      "sha256": "992166c4558e5490c82a1e31a8bb34ce2d3317181e76bf47e0353d06e7944e7e"
+    },
+    "fish": {
+      "file": "johnny-fish.png",
+      "sha256": "c8f0f68031e2e192f861a77f6bf76d217217b4797b9de24f4fc07ba4a2bbe7f2"
+    }
+  }
+}

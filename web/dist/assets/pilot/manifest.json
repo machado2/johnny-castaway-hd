@@ -1,0 +1,304 @@
+{
+  "version": 1,
+  "description": "HD visual pilot. Newly authored artwork, not original extracted sprites.",
+  "assets": {
+    "island": {
+      "file": "island.png",
+      "width": 1536,
+      "height": 1024,
+      "frames": [
+        {
+          "x": 38,
+          "y": 361,
+          "w": 1457,
+          "h": 324,
+          "anchorX": 744.87,
+          "anchorY": 321,
+          "bodyHeight": 318
+        }
+      ],
+      "sha256": "c3ec362ae25b00684e16226da4c2eb57ffab5cd803e6b735325a2d0728ddf437"
+    },
+    "palm": {
+      "file": "palm.png",
+      "width": 1024,
+      "height": 1536,
+      "frames": [
+        {
+          "x": 47,
+          "y": 61,
+          "w": 919,
+          "h": 1428,
+          "anchorX": 655.372,
+          "anchorY": 1425,
+          "bodyHeight": 1422
+        }
+      ],
+      "sha256": "6f8aa8ff83893f4a1890831d5fdc35d72efbc80c7633e599b485889c079e74eb"
+    },
+    "walk": {
+      "file": "johnny-walk.png",
+      "width": 1254,
+      "height": 1254,
+      "frames": [
+        {
+          "x": 106,
+          "y": 5,
+          "w": 129,
+          "h": 303,
+          "anchorX": 45.646,
+          "anchorY": 300,
+          "bodyHeight": 297
+        },
+        {
+          "x": 395,
+          "y": 5,
+          "w": 149,
+          "h": 301,
+          "anchorX": 63.203,
+          "anchorY": 298,
+          "bodyHeight": 295
+        },
+        {
+          "x": 690,
+          "y": 4,
+          "w": 168,
+          "h": 299,
+          "anchorX": 83.81,
+          "anchorY": 296,
+          "bodyHeight": 293
+        },
+        {
+          "x": 990,
+          "y": 5,
+          "w": 193,
+          "h": 302,
+          "anchorX": 99.094,
+          "anchorY": 299,
+          "bodyHeight": 296
+        },
+        {
+          "x": 59,
+          "y": 318,
+          "w": 194,
+          "h": 305,
+          "anchorX": 92.016,
+          "anchorY": 302,
+          "bodyHeight": 299
+        },
+        {
+          "x": 394,
+          "y": 318,
+          "w": 153,
+          "h": 304,
+          "anchorX": 74.917,
+          "anchorY": 301,
+          "bodyHeight": 298
+        },
+        {
+          "x": 714,
+          "y": 318,
+          "w": 146,
+          "h": 306,
+          "anchorX": 68.731,
+          "anchorY": 303,
+          "bodyHeight": 300
+        },
+        {
+          "x": 993,
+          "y": 318,
+          "w": 197,
+          "h": 305,
+          "anchorX": 97.824,
+          "anchorY": 302,
+          "bodyHeight": 299
+        },
+        {
+          "x": 56,
+          "y": 631,
+          "w": 190,
+          "h": 304,
+          "anchorX": 95.32,
+          "anchorY": 301,
+          "bodyHeight": 298
+        },
+        {
+          "x": 385,
+          "y": 629,
+          "w": 167,
+          "h": 307,
+          "anchorX": 85.092,
+          "anchorY": 304,
+          "bodyHeight": 301
+        },
+        {
+          "x": 709,
+          "y": 631,
+          "w": 158,
+          "h": 305,
+          "anchorX": 77.19,
+          "anchorY": 302,
+          "bodyHeight": 299
+        },
+        {
+          "x": 991,
+          "y": 631,
+          "w": 205,
+          "h": 306,
+          "anchorX": 109.587,
+          "anchorY": 303,
+          "bodyHeight": 300
+        },
+        {
+          "x": 62,
+          "y": 945,
+          "w": 187,
+          "h": 303,
+          "anchorX": 98.399,
+          "anchorY": 300,
+          "bodyHeight": 297
+        },
+        {
+          "x": 401,
+          "y": 945,
+          "w": 153,
+          "h": 302,
+          "anchorX": 75.579,
+          "anchorY": 299,
+          "bodyHeight": 296
+        },
+        {
+          "x": 733,
+          "y": 945,
+          "w": 134,
+          "h": 300,
+          "anchorX": 56.775,
+          "anchorY": 297,
+          "bodyHeight": 294
+        },
+        {
+          "x": 1050,
+          "y": 945,
+          "w": 129,
+          "h": 304,
+          "anchorX": 47.063,
+          "anchorY": 301,
+          "bodyHeight": 298
+        }
+      ],
+      "sha256": "992166c4558e5490c82a1e31a8bb34ce2d3317181e76bf47e0353d06e7944e7e"
+    },
+    "fish": {
+      "file": "johnny-fish.png",
+      "width": 1774,
+      "height": 887,
+      "frames": [
+        {
+          "x": 115,
+          "y": 42,
+          "w": 271,
+          "h": 381,
+          "anchorX": 206.714,
+          "anchorY": 378,
+          "bodyHeight": 375,
+          "rodTip": [
+            4.771,
+            162.686
+          ]
+        },
+        {
+          "x": 559,
+          "y": 39,
+          "w": 275,
+          "h": 383,
+          "anchorX": 185.842,
+          "anchorY": 380,
+          "bodyHeight": 377,
+          "rodTip": [
+            4.871,
+            85.419
+          ]
+        },
+        {
+          "x": 906,
+          "y": 49,
+          "w": 352,
+          "h": 373,
+          "anchorX": 307.389,
+          "anchorY": 370,
+          "bodyHeight": 367,
+          "rodTip": [
+            4.806,
+            133.833
+          ]
+        },
+        {
+          "x": 1373,
+          "y": 41,
+          "w": 348,
+          "h": 382,
+          "anchorX": 267.549,
+          "anchorY": 379,
+          "bodyHeight": 376,
+          "rodTip": [
+            4.861,
+            179.0
+          ]
+        },
+        {
+          "x": 44,
+          "y": 485,
+          "w": 346,
+          "h": 382,
+          "anchorX": 266.072,
+          "anchorY": 379,
+          "bodyHeight": 376,
+          "rodTip": [
+            4.75,
+            178.65
+          ]
+        },
+        {
+          "x": 561,
+          "y": 501,
+          "w": 310,
+          "h": 365,
+          "anchorX": 169.1,
+          "anchorY": 362,
+          "bodyHeight": 359,
+          "rodTip": [
+            4.875,
+            12.562
+          ]
+        },
+        {
+          "x": 1004,
+          "y": 487,
+          "w": 276,
+          "h": 379,
+          "anchorX": 176.534,
+          "anchorY": 376,
+          "bodyHeight": 373,
+          "rodTip": [
+            4.857,
+            32.143
+          ]
+        },
+        {
+          "x": 1373,
+          "y": 485,
+          "w": 347,
+          "h": 382,
+          "anchorX": 267.483,
+          "anchorY": 379,
+          "bodyHeight": 376,
+          "rodTip": [
+            4.879,
+            178.606
+          ]
+        }
+      ],
+      "sha256": "c8f0f68031e2e192f861a77f6bf76d217217b4797b9de24f4fc07ba4a2bbe7f2"
+    }
+  }
+}
