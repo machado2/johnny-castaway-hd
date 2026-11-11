@@ -2,9 +2,13 @@
 
 Experiência independente da [reconstrução original](https://github.com/machado2/johnny-castaway). Este repositório não altera nem publica sobre castaway.fbmac.net.
 
+[Abrir a prévia HD pública](https://machado2.github.io/johnny-castaway-hd/). O endereço funciona sem servidor local. A publicação pelo GitHub Pages usa este repositório e preserva os quadros completos e a cadência original.
+
 O piloto atual aplica acabamento novo à geometria extraída do original: ilha, sombra, coqueiro, céu/mar e 28 poses de Johnny. A cena usa 25 dessas poses em seis percursos originais, com viradas, pausas e passagem atrás do tronco. O circuito demonstrativo dura aproximadamente 20 segundos; sua seleção e ordem são próprias deste piloto.
 
 ## Ver localmente
+
+A execução local é opcional; para visualizar a prévia, prefira o endereço público acima.
 
 Requer Node.js, sem dependências npm:
 
