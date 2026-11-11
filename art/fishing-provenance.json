@@ -1,0 +1,23 @@
+{
+  "mode": "built-in imagegen",
+  "transparent_background": true,
+  "promptSet": "FISHING-PROMPTS.md",
+  "copiedWithoutModification": true,
+  "files": {
+    "restored-00.png": "exec-c075c616-f98e-4935-bc12-426370cbbc7d.png",
+    "restored-01.png": "exec-4b0efcf2-dedd-474a-879f-9812c56cd01d.png",
+    "restored-02.png": "exec-f82d456f-b692-48ef-a4a8-5e3a48a8072f.png",
+    "restored-03.png": "exec-fcc56823-24cc-4e08-9dd9-f625e1016847.png",
+    "restored-04.png": "exec-86de9010-e350-47cb-b1ff-12c7bc030c9b.png",
+    "restored-05.png": "exec-c3326874-98dc-4839-b951-6f2e0717f5c2.png",
+    "restored-06.png": "exec-a8131e8b-edf3-4eb9-b441-b0a8fb90451d.png",
+    "restored-07.png": "exec-eb92a6f9-2b2c-4e78-a845-40c063ca5a21.png",
+    "restored-08.png": "exec-b26a2305-acfd-4744-b137-1f2f5bc909d5.png",
+    "restored-09.png": "exec-09dc5377-e4ca-4e08-8fb6-824b6e4370eb.png",
+    "restored-10.png": "exec-b6df1fc2-2e3f-43e5-8bba-d63ce8caf1d1.png",
+    "restored-11.png": "exec-0e066a97-6f10-49fc-bcde-f554d1916e29.png",
+    "restored-12.png": "exec-b5e62a32-24bf-4716-8a8f-ad8853a7265a.png",
+    "restored-13.png": "exec-e0bcdf35-9b28-45c7-afe6-b36d5e9866ba.png",
+    "restored-water.png": "exec-f489a033-66b6-46c8-8580-4ec1bf24c015.png"
+  }
+}

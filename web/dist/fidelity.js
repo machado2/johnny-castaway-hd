@@ -1,6 +1,9 @@
 import {buildTimeline,sampleTimeline,layoutFidelity,behindPalm} from './fidelity-motion.js';
 import {cropOriginal,restoreSprite,silhouetteAudit,restoreOcean,edgeVariants} from './restoration.js';
 import {paddedPlacement} from './edge-composite.js';
+import {loadFishing,paintFishing} from './fishing.js';
+import {sampleFishing,layoutFishing,fishingSoundsBetween} from './fishing-motion.js';
+import {OriginalAudio} from './audio.js';
 
 const canvas=document.querySelector('canvas'),ctx=canvas.getContext('2d',{alpha:false});
 const params=new URLSearchParams(location.search),frozen=params.has('t');
@@ -8,6 +11,9 @@ const mode=params.get('art')||'restored',compare=params.get('view')==='compare';
 const poses=params.get('view')==='poses';
 const edgeReview=params.get('view')==='edges',edgeScenes=params.get('view')==='edge-scenes';
 const edgePoses=params.get('view')==='edge-poses';
+const fishingMode=params.get('scene')!=='walk'&&!location.pathname.endsWith('walk-study.html')&&!poses&&!edgeReview&&!edgeScenes&&!edgePoses;
+const audio=new OriginalAudio();
+let fishing=null;
 const edgeMode=['strict','small','large'].includes(params.get('edges'))?params.get('edges'):'large';
 const needEdges=edgeMode!=='strict'||edgeReview||edgeScenes||edgePoses;
 const base=new URL('./assets/fidelity/',import.meta.url);
@@ -16,7 +22,8 @@ let source,manifest,timeline,assets,layout,frameCount=0;
 const intervals=[],drawTimes=[];
 const image=async file=>{const im=new Image();im.src=new URL(file,base);await im.decode();return im;};
 
-function resize(){layout=layoutFidelity(innerWidth,innerHeight,devicePixelRatio||1);canvas.width=layout.pixelWidth;canvas.height=layout.pixelHeight;if(ready)draw();}
+function sceneLayout(w,h,dpr=1){return fishingMode&&fishing?layoutFishing(w,h,dpr,fishing.bounds):layoutFidelity(w,h,dpr);}
+function resize(){layout=sceneLayout(innerWidth,innerHeight,devicePixelRatio||1);canvas.width=layout.pixelWidth;canvas.height=layout.pixelHeight;if(ready)draw();}
 
 function paintOcean(l,original,t) {
   const im=original?assets.oceanSource:assets.ocean;
@@ -52,6 +59,7 @@ function paintSprite(item,box,l,original,flip=false,treatment=edgeMode) {
 function scene(l,original,t,treatment=edgeMode) {
   ctx.imageSmoothingEnabled=!original;paintOcean(l,original,t);
   paintSprite(assets.island,source.island,l,original,false,treatment);
+  if(fishingMode&&fishing){paintFishing(ctx,fishing,source,assets,l,original,t,paintSprite,treatment);return;}
   const f=sampleTimeline(timeline,t),shape=source.walkFrames[f.frame];
   if(!behindPalm(f,shape))paintSprite(assets.palm,source.palm,l,original,false,treatment);
   paintSprite(assets.walk[f.frame],{x:f.x,y:f.y,w:shape.w,h:shape.h},l,original,f.flip_x,treatment);
@@ -111,7 +119,7 @@ function draw(){
       }
     }
   }else if(compare){
-    const half=innerWidth/2,l=layoutFidelity(half,innerHeight,1);
+    const half=innerWidth/2,l=sceneLayout(half,innerHeight,1);
     for(let i=0;i<2;i++){ctx.save();ctx.beginPath();ctx.rect(i*half,0,half,innerHeight);ctx.clip();ctx.translate(i*half,0);scene(l,i===0,elapsed);ctx.restore();}
     ctx.fillStyle='#0009';ctx.fillRect(half-1,0,2,innerHeight);
   }else scene(layout,mode==='original',elapsed);
@@ -120,11 +128,15 @@ function draw(){
 
 function loop(now){
   request=null;if(document.hidden||!ready)return;
-  if(last!==null){const dt=now-last;intervals.push(dt);if(intervals.length>300)intervals.shift();elapsed+=Math.min(dt,100)/1000;}
+  if(last!==null){const dt=now-last;intervals.push(dt);if(intervals.length>300)intervals.shift();const before=elapsed;elapsed+=Math.min(dt,100)/1000;
+    if(fishing)for(const id of fishingSoundsBetween(fishing.source,before,elapsed))audio.play(id);}
   last=now;draw();request=requestAnimationFrame(loop);
 }
 function resume(){last=null;if(request!==null)cancelAnimationFrame(request);request=ready&&!frozen&&!document.hidden?requestAnimationFrame(loop):null;}
 addEventListener('resize',resize);document.addEventListener('visibilitychange',resume);addEventListener('pagehide',()=>cancelAnimationFrame(request));addEventListener('pageshow',resume);
+for(const event of ['pointerup','touchend','click','keydown'])canvas.addEventListener(event,()=>{if(fishingMode)audio.unlock().catch(error=>console.error('Audio:',error));},{passive:true});
+document.addEventListener('visibilitychange',()=>{if(document.hidden)audio.stop();else audio.resume().catch(error=>console.error('Audio:',error));});
+addEventListener('pagehide',()=>audio.stop());
 resize();
 
 try{
@@ -155,11 +167,13 @@ try{
     island:assets.island.variants[key].audit,palm:assets.palm.variants[key].audit,
     walk:used.filter(index=>assets.walk[index].variants[key]).map(index=>({index,...assets.walk[index].variants[key].audit})),
   }])):{};
-  ready=true;canvas.dataset.ready='true';draw();resume();
+  if(fishingMode){fishing=await loadFishing(source);await audio.load(fishing.source.sounds);resize();}
+  ready=true;canvas.dataset.ready='true';canvas.dataset.scene=fishingMode?'fishing':'walk';draw();resume();
   const p95=a=>a.length?[...a].sort((a,b)=>a-b)[Math.floor((a.length-1)*.95)]:0;
   Object.defineProperty(window,'castawayFidelity',{value:Object.freeze({get status(){return {
-    time:elapsed,duration:timeline.duration,frameCount,fps:intervals.length?1000/(intervals.reduce((a,b)=>a+b,0)/intervals.length):0,
-    p95FrameMs:p95(intervals),p95DrawMs:p95(drawTimes),viewport:{...layout},sample:sampleTimeline(timeline,elapsed),
+    time:elapsed,duration:fishing?fishing.source.duration:timeline.duration,frameCount,fps:intervals.length?1000/(intervals.reduce((a,b)=>a+b,0)/intervals.length):0,
+    p95FrameMs:p95(intervals),p95DrawMs:p95(drawTimes),viewport:{...layout},sample:fishing?sampleFishing(fishing.source,elapsed):sampleTimeline(timeline,elapsed),
+    scene:fishingMode?'fishing':'walk',fishingPoses:fishing?.poses.length,audio:audio.context?.state||'locked',
     art:mode,comparison:compare,strictBaselineSilhouettes:audit,restoredFrames:manifest.restoredFrames,edgeMode,edgeReview,edgeAudit,
   };}})});
 }catch(error){canvas.dataset.error=String(error);console.error(error);}

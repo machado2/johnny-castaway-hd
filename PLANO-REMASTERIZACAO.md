@@ -1,5 +1,7 @@
 # Plano de remasterização: resolução adaptável, arte HD e quadros originais
 
+Atualização de 11/11/2026: caminhada aprovada preservada e primeira sequência completa de pesca implementada. O estado verificável, limites e reprodução estão em [PESCA.md](PESCA.md). Próxima etapa: integrar o catálogo e a progressão originais à experiência HD antes de ampliar a restauração para as demais famílias de ações.
+
 Decisão do usuário em 11/11/2026: manter somente a quantidade de quadros e a cadência do original, com cada personagem desenhado inteiro. Intermediários, interpolação de poses e animação por membros separados foram rejeitados e retirados do escopo. O piloto preserva poses e tabelas originais, com restauração de acabamento também na ilha, coqueiro e mar. A direção está em [Estratégias para a caminhada](ESTRATEGIAS-CAMINHADA.md).
 
 Plano preparado em 10/11/2026 a partir do código e dos recursos do projeto original em `../johnycastaway`. Por orientação posterior do usuário, a experiência HD passa a ter repositório independente. Este documento descreve o escopo completo futuro; o estado do piloto está documentado no README deste repositório.

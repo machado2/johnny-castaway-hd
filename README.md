@@ -4,7 +4,9 @@ Experiência independente da [reconstrução original](https://github.com/machad
 
 [Abrir a prévia HD pública](https://machado2.github.io/johnny-castaway-hd/). O endereço funciona sem servidor local. A publicação pelo GitHub Pages usa este repositório e preserva os quadros completos e a cadência original.
 
-O piloto atual aplica acabamento novo à geometria extraída do original: ilha, sombra, coqueiro, céu/mar e 28 poses de Johnny. A cena usa 25 dessas poses em seis percursos originais, com viradas, pausas e passagem atrás do tronco. O circuito demonstrativo dura aproximadamente 20 segundos; sua seleção e ordem são próprias deste piloto.
+O piloto atual mostra a pesca completa `FISHING.ADS`, sequência 2: Johnny pega a vara, caminha até a borda, lança a linha, captura o peixe e retorna. São 82 poses completas restauradas, três ondulações da captura e os sons originais, além do cenário e da caminhada já aprovados. As 352 apresentações do roteiro mantêm os tempos e as posições originais (19,36 s). Uma pausa e uma virada das tabelas originais fecham o ciclo demonstrativo de 22,11 s. Toque no canvas para habilitar os sons.
+
+A [caminhada aprovada continua disponível](https://machado2.github.io/johnny-castaway-hd/?scene=walk). Os detalhes estão em [PESCA.md](PESCA.md). A história completa e as outras sete sequências de pesca ainda não estão integradas.
 
 ## Ver localmente
 
@@ -41,7 +43,7 @@ A apresentação acompanha a atualização da tela, mas **mantém a quantidade d
 npm test
 ```
 
-Onze testes específicos cobrem as seis rotas, viradas, profundidade, cobertura das poses, integridade dos arquivos, enquadramento, contornos, opacidade, alinhamento e preservação da cadência original. Os dez testes antigos permanecem como verificações do primeiro piloto; não validam a qualidade visual desta restauração.
+A suíte tem 36 testes: 26 cobrem caminhada, bordas, pesca, áudio, integridade e enquadramento; dez permanecem como verificações do primeiro piloto arquivado. Esses dez não validam a qualidade visual desta restauração nem são usados para justificar animação por membros.
 
 [VALIDACAO.md](VALIDACAO.md) registra observações e limites. A faixa comprova um limite de alteração do contorno, não identidade perfeita do rosto nem posicionamento exato de todo detalhe interno. A comparação visual continua necessária. Os detalhes desta revisão estão em [COMPARACAO-BORDAS.md](COMPARACAO-BORDAS.md).
 
@@ -53,6 +55,6 @@ Os arquivos ativos estão em `web/dist/assets/fidelity/`. `source.json` registra
 
 `npm run assets:extract` reextrai as referências a partir dos recursos decodificados no projeto original vizinho. `npm run assets:manifest` atualiza somente os metadados da arte selecionada. Ambos requerem Python e Pillow; não são necessários para executar a cena.
 
-A versão anterior com membros articulados está preservada no histórico/tag `v0.1.0-pilot`. Seus arquivos `pilot.js` e `assets/pilot/` não são carregados pela página atual. Esta cena se limita à caminhada: ainda não restaura pesca, catálogo completo, capítulos, calendário, áudio ou história. A ampliação completa continua no [plano](PLANO-REMASTERIZACAO.md).
+A versão anterior com membros articulados está preservada no histórico/tag `v0.1.0-pilot`. Seus arquivos `pilot.js` e `assets/pilot/` não são carregados pela página atual. O piloto cobre a caminhada e uma sequência completa de pesca; catálogo completo, capítulos, calendário e progressão da história continuam no [plano](PLANO-REMASTERIZACAO.md).
 
 Johnny Castaway e os recursos originais são conteúdo Sierra/Dynamix. Os detalhes recriados são interpretações de acabamento, não recuperação comprovada de informação perdida. Nenhuma outra reimplementação foi consultada.
