@@ -50,7 +50,7 @@ export function restoreSprite(source,generated,crop,factor=6,softness=.28,charac
   return {image:c,mask,source,factor};
 }
 
-export function edgeVariants(source,generated,crop,kind,factor=6,thinProp=null) {
+export function edgeVariants(source,generated,crop,kind,factor=6) {
   if(!generated)return {};
   const pad=4,w=(source.width+pad*2)*factor,h=(source.height+pad*2)*factor;
   const reference=make(w,h),r=reference.getContext('2d');r.imageSmoothingEnabled=false;
@@ -63,21 +63,13 @@ export function edgeVariants(source,generated,crop,kind,factor=6,thinProp=null) 
     for(let x=left;x<=right;x++)if(!occupied[y*w+x])gaps[y*w+x]=1;
   }
   const distances=distanceToMask(occupied,w,h);
-  let propDistances=null;
-  if(thinProp){
-    const mask=new Uint8Array(w*h);
-    for(let y=0;y<source.height;y++)for(let x=0;x<source.width;x++)if(thinProp[y*source.width+x]){
-      for(let dy=0;dy<factor;dy++)mask.fill(1,((y+pad)*factor+dy)*w+(x+pad)*factor,((y+pad)*factor+dy)*w+(x+pad+1)*factor);
-    }
-    propDistances=distanceToMask(mask,w,h);
-  }
   const candidate=make(w,h),g=candidate.getContext('2d');g.imageSmoothingQuality='high';
   const sx=crop[2]/source.width,sy=crop[3]/source.height;
   g.drawImage(generated,crop[0]-pad*sx,crop[1]-pad*sy,crop[2]+2*pad*sx,crop[3]+2*pad*sy,0,0,w,h);
   const paint=read(candidate),variants={};
   for(const [name,profile]of Object.entries(EDGE_PROFILES)){
     const c=make(w,h),ctx=c.getContext('2d'),out=ctx.createImageData(w,h);out.data.set(paint.data);
-    let trimmed=0,alphaRaised=0,maxOutside=0,protectedGapLeak=0,propRetained=0;
+    let trimmed=0,alphaRaised=0,maxOutside=0,protectedGapLeak=0;
     for(let p=0;p<occupied.length;p++){
       const y=Math.floor(p/w),padY=(y-pad*factor)/factor;
       // The lower character area includes the soles and ground shadow; keep a tighter envelope.
@@ -87,20 +79,14 @@ export function edgeVariants(source,generated,crop,kind,factor=6,thinProp=null) 
       const protectedGap=kind!=='island'&&gaps[p];
       const radius=Math.min(profile[kind],protectedGap ? .25 : Infinity,contact ? .25 : Infinity);
       const distance=occupied[p]?0:Math.max(0,(distances[p]-.5)/factor);
-      const before=paint.data[p*4+3],bodyAlpha=boundedAlpha(before,distance,radius);
-      // A carried rod is a thin object, not an empty gap between limbs. Permit
-      // its restored ink within six source pixels of the decoded rod only.
-      const propDistance=propDistances?Math.max(0,(propDistances[p]-.5)/factor):Infinity;
-      const propAlpha=propDistances?boundedAlpha(before,propDistance,name==='large'?6:.5):0;
-      const after=Math.max(bodyAlpha,propAlpha);
-      if(propAlpha>bodyAlpha)propRetained++;
+      const before=paint.data[p*4+3],after=boundedAlpha(before,distance,radius);
       out.data[p*4+3]=after;if(!after)out.data[p*4]=out.data[p*4+1]=out.data[p*4+2]=0;
       if(after<before)trimmed++;if(after>before)alphaRaised++;
       if(after>0&&!occupied[p])maxOutside=Math.max(maxOutside,distance);
-      if(after>0&&protectedGap&&distance>=.25&&!propAlpha)protectedGapLeak++;
+      if(after>0&&protectedGap&&distance>=.25)protectedGapLeak++;
     }
     ctx.putImageData(out,0,0);
-    variants[name]={image:c,source,factor,pad,audit:{radius:profile[kind],maxOutside,alphaRaised,protectedGapLeak,trimmed,propRetained}};
+    variants[name]={image:c,source,factor,pad,audit:{radius:profile[kind],maxOutside,alphaRaised,protectedGapLeak,trimmed}};
   }
   return variants;
 }

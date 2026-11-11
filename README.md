@@ -29,9 +29,9 @@ Por decisão do usuário, a restauração mantém somente os quadros completos e
 ## Como a compatibilidade da cena principal é mantida
 
 - Os desenhos originais são alvos de edição, com posições, margens e poses registradas. Não se recentralizam os quadros pelo tamanho do personagem.
-- A transparência da arte gerada é preservada dentro de uma faixa ao redor do contorno original. O renderizador apenas reduz sua opacidade nas bordas e nos halos fracos; não transforma franjas semitransparentes em regiões opacas nem põe o original borrado por baixo. Esse preenchimento antigo existe somente na opção A de comparação.
-- Os limites escolhidos na opção C são 2 pixels originais para ilha e personagem, e 1 para o coqueiro. A opção B usa 1, 0,5 e 0,65 respectivamente. Espaços entre membros/folhas e a faixa inferior do personagem têm limite mais estreito, de 0,25 pixel; sombras cinzentas têm tratamento separado. Esses limites não dependem da resolução da tela.
-- Na pesca, a vara carregada e sua linha têm uma guia própria extraída de `MJFISH1.BMP` (22/23), com tolerância de até 6 pixels originais. Isso evita que o recorte de espaços entre membros apague trechos da vara. A guia serve somente à transparência: cada pose continua sendo uma imagem completa, nas mesmas coordenadas.
+- Na caminhada aprovada e no cenário, a transparência da arte gerada é preservada dentro de uma faixa ao redor do contorno original. O renderizador apenas reduz sua opacidade nas bordas e nos halos fracos; não transforma franjas semitransparentes em regiões opacas nem põe o original borrado por baixo. Esse preenchimento antigo existe somente na opção A de comparação.
+- Nessa caminhada, os limites da opção C são 2 pixels originais para ilha e personagem, e 1 para o coqueiro. A opção B usa 1, 0,5 e 0,65 respectivamente. Espaços entre membros/folhas e a faixa inferior do personagem têm limite mais estreito, de 0,25 pixel; sombras cinzentas têm tratamento separado. Esses limites não dependem da resolução da tela.
+- As 82 poses completas da pesca preservam a transparência do próprio desenho gerado. Não recebem a silhueta pixelada como máscara, que cortava cabeça, braços, pernas e objetos quando os contornos não coincidiam. Somente franjas com alpha abaixo de 64/255 são atenuadas. O registro da imagem inteira na caixa original, as coordenadas e os tempos continuam iguais; não se promete coincidência de cada detalhe da silhueta gerada com os pixels originais.
 - Recortes com margem de 4 pixels originais preservam o ponto de desenho e o espelhamento. As posições das rotas não mudam. Não há recentralização dos sprites, ajuste automático de pernas ou deslocamento do corpo.
 - O mar conserva as grandes regiões de cor e ondas do original; a pintura gerada contribui textura e uma pequena parcela da cor. O horizonte permanece alinhado. A ondulação demonstrativa é discreta e não reproduz ainda toda a sequência de água original.
 - Índices dos quadros, posições, espelhamentos e regra de profundidade vêm das tabelas extraídas de SCRANTIC. A composição da ilha e do coqueiro usa BACKGRND.BMP; personagem e fundo usam JOHNWALK.BMP e OCEAN00.SCR.
@@ -44,7 +44,7 @@ A apresentação acompanha a atualização da tela, mas **mantém a quantidade d
 npm test
 ```
 
-A suíte tem 39 testes: 29 cobrem caminhada, bordas, pesca, áudio, integridade e enquadramento; dez permanecem como verificações do primeiro piloto arquivado. Esses dez não validam a qualidade visual desta restauração nem são usados para justificar animação por membros.
+A suíte tem 37 testes: 27 cobrem caminhada, bordas, pesca, áudio, integridade e enquadramento; dez permanecem como verificações do primeiro piloto arquivado. Esses dez não validam a qualidade visual desta restauração nem são usados para justificar animação por membros. A revisão da pesca também inspeciona as 82 poses renderizadas e verifica, no navegador, a preservação dos pixels visíveis do desenho completo; ver [PESCA.md](PESCA.md).
 
 [VALIDACAO.md](VALIDACAO.md) registra observações e limites. A faixa comprova um limite de alteração do contorno, não identidade perfeita do rosto nem posicionamento exato de todo detalhe interno. A comparação visual continua necessária. Os detalhes desta revisão estão em [COMPARACAO-BORDAS.md](COMPARACAO-BORDAS.md).
 

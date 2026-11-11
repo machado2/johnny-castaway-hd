@@ -1,7 +1,7 @@
 import {buildTimeline,sampleTimeline,layoutFidelity,behindPalm} from './fidelity-motion.js';
-import {cropOriginal,restoreSprite,silhouetteAudit,restoreOcean,edgeVariants} from './restoration.js';
+import {cropOriginal,restoreSprite,silhouetteAudit,restoreOcean,edgeVariants} from './restoration.js?v=whole-pose-1';
 import {paddedPlacement} from './edge-composite.js';
-import {loadFishing,paintFishing} from './fishing.js';
+import {loadFishing,paintFishing} from './fishing.js?v=whole-pose-1';
 import {sampleFishing,layoutFishing,fishingSoundsBetween} from './fishing-motion.js';
 import {OriginalAudio} from './audio.js';
 
