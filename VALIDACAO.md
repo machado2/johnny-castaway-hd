@@ -1,5 +1,7 @@
 # Validação da restauração piloto
 
+Atualização de bordas: a composição padrão passou a preservar a transparência gerada dentro de uma faixa de tolerância. A comparação A/B/C, escolha do perfil e verificações estão em [COMPARACAO-BORDAS.md](COMPARACAO-BORDAS.md). As medições e a auditoria de máscara abaixo registram a versão anterior, v0.2.0, e não devem ser confundidas com o tratamento de bordas atual.
+
 Data: 11/11/2026. Windows, navegador interno baseado em Chromium. Esta revisão substitui a caminhada articulada por poses e percursos extraídos do original, e refaz o acabamento de todos os elementos da cena de caminhada.
 
 ## Compatibilidade e revisão visual

@@ -1,10 +1,15 @@
 import {buildTimeline,sampleTimeline,layoutFidelity,behindPalm} from './fidelity-motion.js';
-import {cropOriginal,restoreSprite,silhouetteAudit,restoreOcean} from './restoration.js';
+import {cropOriginal,restoreSprite,silhouetteAudit,restoreOcean,edgeVariants} from './restoration.js';
+import {paddedPlacement} from './edge-composite.js';
 
 const canvas=document.querySelector('canvas'),ctx=canvas.getContext('2d',{alpha:false});
 const params=new URLSearchParams(location.search),frozen=params.has('t');
 const mode=params.get('art')||'restored',compare=params.get('view')==='compare';
 const poses=params.get('view')==='poses';
+const edgeReview=params.get('view')==='edges',edgeScenes=params.get('view')==='edge-scenes';
+const edgePoses=params.get('view')==='edge-poses';
+const edgeMode=['strict','small','large'].includes(params.get('edges'))?params.get('edges'):'large';
+const needEdges=edgeMode!=='strict'||edgeReview||edgeScenes||edgePoses;
 const base=new URL('./assets/fidelity/',import.meta.url);
 let elapsed=Number(params.get('t'))||0,last=null,request=null,ready=false;
 let source,manifest,timeline,assets,layout,frameCount=0;
@@ -34,34 +39,75 @@ function paintOcean(l,original,t) {
   }
 }
 
-function paintSprite(item,box,l,original,flip=false) {
-  const im=original?item.source:item.image;
+function paintSprite(item,box,l,original,flip=false,treatment=edgeMode) {
+  const selected=original?item:(item.variants?.[treatment]||item);
+  const im=original?item.source:selected.image,pad=original?0:(selected.pad||0);
   const x=l.x+box.x*l.scale,y=l.y+box.y*l.scale;
   ctx.save();ctx.translate(x+(flip?box.w*l.scale:0),y);ctx.scale(flip?-1:1,1);
   ctx.imageSmoothingEnabled=!original;ctx.imageSmoothingQuality='high';
-  ctx.drawImage(im,0,0,box.w*l.scale,box.h*l.scale);ctx.restore();
+  const rect=paddedPlacement({x:0,y:0,w:box.w,h:box.h},pad);
+  ctx.drawImage(im,rect.x*l.scale,rect.y*l.scale,rect.w*l.scale,rect.h*l.scale);ctx.restore();
 }
 
-function scene(l,original,t) {
+function scene(l,original,t,treatment=edgeMode) {
   ctx.imageSmoothingEnabled=!original;paintOcean(l,original,t);
-  paintSprite(assets.island,source.island,l,original);
+  paintSprite(assets.island,source.island,l,original,false,treatment);
   const f=sampleTimeline(timeline,t),shape=source.walkFrames[f.frame];
-  if(!behindPalm(f,shape))paintSprite(assets.palm,source.palm,l,original);
-  paintSprite(assets.walk[f.frame],{x:f.x,y:f.y,w:shape.w,h:shape.h},l,original,f.flip_x);
-  if(behindPalm(f,shape))paintSprite(assets.palm,source.palm,l,original);
+  if(!behindPalm(f,shape))paintSprite(assets.palm,source.palm,l,original,false,treatment);
+  paintSprite(assets.walk[f.frame],{x:f.x,y:f.y,w:shape.w,h:shape.h},l,original,f.flip_x,treatment);
+  if(behindPalm(f,shape))paintSprite(assets.palm,source.palm,l,original,false,treatment);
+}
+
+function drawEdgeReview(){
+  const keys=['strict','small','large'],labels=['A · Recorte anterior','B · Tolerância pequena','C · Tolerância maior'];
+  const portrait=innerHeight>innerWidth,pw=portrait?innerWidth:innerWidth/3,ph=portrait?innerHeight/3:innerHeight;
+  const segment=timeline.frames.filter(f=>f.kind==='walk'&&f.route===3).slice(0,8);
+  const duration=segment.at(-1).time-segment[0].time+.11;
+  const t=((elapsed%duration)+duration)%duration;
+  const f=segment.findLast(f=>f.time-segment[0].time<=t+1e-9)||segment[0];
+  for(let i=0;i<3;i++){
+    const ox=portrait?0:i*pw,oy=portrait?i*ph:0;
+    ctx.save();ctx.translate(ox,oy);ctx.beginPath();ctx.rect(0,0,pw,ph);ctx.clip();
+    ctx.fillStyle='#e1e8e8';ctx.fillRect(0,0,pw,ph);
+    if(edgeScenes)scene(layoutFidelity(pw,ph,1),false,elapsed,keys[i]);
+    else {
+      const islandScale=Math.min((pw-36)/288,ph*.18/52),islandY=ph*.24;
+      ctx.fillStyle='#244e87';ctx.fillRect(0,ph*.12,pw,ph*.36);
+      paintSprite(assets.island,source.island,{scale:islandScale,x:pw/2-429*islandScale,y:islandY-279*islandScale},false,false,keys[i]);
+      const scale=Math.min((pw-44)/132,ph*.42/80),shape=source.walkFrames[f.frame];
+      const l={scale,x:pw/2-363*scale,y:ph*.56-234*scale};
+      ctx.strokeStyle='#a5b8b6';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(0,l.y+315*scale);ctx.lineTo(pw,l.y+315*scale);ctx.stroke();
+      paintSprite(assets.walk[f.frame],{x:f.x,y:f.y,w:shape.w,h:shape.h},l,false,f.flip_x,keys[i]);
+    }
+    ctx.fillStyle='#fffffff0';ctx.fillRect(0,0,pw,Math.min(90,ph*.11));
+    ctx.fillStyle='#173033';ctx.font=`${Math.max(12,Math.min(21,pw/25))}px sans-serif`;ctx.fillText(labels[i],16,28);
+    if(ph>400){ctx.font='15px sans-serif';ctx.fillText(i===0?'Máscara original imposta':i===1?'Ilha: 1 px · Johnny: 0,5 px':'Ilha: 2 px · Johnny: 2 px',16,55);ctx.fillText('Mesmas imagens, posições e tempo',16,78);}
+    ctx.strokeStyle='#5e777c';ctx.strokeRect(0,0,pw,ph);ctx.restore();
+  }
 }
 
 function draw(){
   const start=performance.now();ctx.setTransform(canvas.width/innerWidth,0,0,canvas.height/innerHeight,0,0);
-  if(poses){
+  if(edgePoses){
+    ctx.fillStyle='#e1e8e8';ctx.fillRect(0,0,innerWidth,innerHeight);
+    const cell=innerWidth/8,rowHeight=innerHeight/3,s=Math.min((cell-24)/57,(rowHeight-50)/80);
+    for(const [row,key]of ['strict','small','large'].entries()){
+      ctx.fillStyle='#173033';ctx.font='18px sans-serif';ctx.fillText(['A · Recorte anterior','B · Tolerância pequena','C · Tolerância maior'][row],16,row*rowHeight+25);
+      for(let i=1;i<=8;i++){
+        const f=source.walkFrames[i];
+        paintSprite(assets.walk[i],{x:0,y:0,w:f.w,h:f.h},{x:(i-1)*cell+12,y:row*rowHeight+45,scale:s},false,false,key);
+      }
+    }
+  }else if(edgeReview||edgeScenes)drawEdgeReview();
+  else if(poses){
     ctx.fillStyle='#b8c9cc';ctx.fillRect(0,0,innerWidth,innerHeight);
     const indices=source.references[params.get('group')]?.indices||[1,2,3,4,5,6,7,8];
     const cell=innerWidth/indices.length,rowHeight=innerHeight/2,s=Math.min(cell/57,(rowHeight-80)/80);
     for(let row=0;row<2;row++){
       ctx.fillStyle='#173033';ctx.font='18px sans-serif';ctx.fillText(row?'Restauração — mesmas poses':`Original — poses ${indices.join(', ')}`,18,row*rowHeight+28);
       for(const [column,i]of indices.entries()){
-        const im=row?assets.walk[i].image:assets.walk[i].source,f=source.walkFrames[i];
-        ctx.imageSmoothingEnabled=!!row;ctx.drawImage(im,column*cell+12,row*rowHeight+60,f.w*s,f.h*s);
+        const f=source.walkFrames[i];
+        paintSprite(assets.walk[i],{x:0,y:0,w:f.w,h:f.h},{x:column*cell+12,y:row*rowHeight+60,scale:s},!row);
       }
     }
   }else if(compare){
@@ -87,24 +133,33 @@ try{
   const loaded=Object.fromEntries(await Promise.all(Object.entries(manifest.files).map(async([key,file])=>[key,await image(file)])));
   const [islandSource,palmSource,walkSource,oceanSource]=await Promise.all(['source-island.png','source-palm.png','source-walk.png','source-ocean.png'].map(image));
   const crop=(name,box)=>{const ref=source.references[name],im=loaded[name];return box.map((v,i)=>v*(i%2?im.height/ref.canvas[1]:im.width/ref.canvas[0]));};
+  const restored=(original,candidate,box,kind,softness,includeEdges=true)=>{
+    const item=restoreSprite(original,candidate,box,6,softness,kind==='character');
+    item.variants=needEdges&&includeEdges?edgeVariants(original,candidate,box,kind):{};return item;
+  };
   assets={oceanSource,ocean:restoreOcean(oceanSource,loaded.ocean),
-    island:restoreSprite(islandSource,loaded.island,crop('island',source.references.island.box),6,.65),
-    palm:restoreSprite(palmSource,loaded.palm,crop('palm',source.references.palm.box),6,.4),walk:[]};
+    island:restored(islandSource,loaded.island,crop('island',source.references.island.box),'island',.65),
+    palm:restored(palmSource,loaded.palm,crop('palm',source.references.palm.box),'palm',.4),walk:[]};
   for(const shape of source.walkFrames){
     const original=cropOriginal(walkSource,shape);
     const group=Object.keys(source.references).find(key=>source.references[key].indices?.includes(shape.index)&&loaded[key]);
     let candidate=null,box=null;
     if(group){const ref=source.references[group],cell=ref.indices.indexOf(shape.index),k=ref.factor;candidate=loaded[group];
       box=crop(group,[((cell%2)*96+24)*k,(Math.floor(cell/2)*96+10)*k,shape.w*k,shape.h*k]);}
-    assets.walk.push(restoreSprite(original,candidate,box,6,.28,true));
+    assets.walk.push(restored(original,candidate,box,'character',.28,
+      !(edgeReview||edgePoses)||(shape.index>=1&&shape.index<=8)));
   }
   const used=[...new Set(timeline.frames.map(f=>f.frame))];
   const audit={island:silhouetteAudit(assets.island),palm:silhouetteAudit(assets.palm),walk:used.map(index=>({index,...silhouetteAudit(assets.walk[index])}))};
+  const edgeAudit=needEdges?Object.fromEntries(['small','large'].map(key=>[key,{
+    island:assets.island.variants[key].audit,palm:assets.palm.variants[key].audit,
+    walk:used.filter(index=>assets.walk[index].variants[key]).map(index=>({index,...assets.walk[index].variants[key].audit})),
+  }])):{};
   ready=true;canvas.dataset.ready='true';draw();resume();
   const p95=a=>a.length?[...a].sort((a,b)=>a-b)[Math.floor((a.length-1)*.95)]:0;
   Object.defineProperty(window,'castawayFidelity',{value:Object.freeze({get status(){return {
     time:elapsed,duration:timeline.duration,frameCount,fps:intervals.length?1000/(intervals.reduce((a,b)=>a+b,0)/intervals.length):0,
     p95FrameMs:p95(intervals),p95DrawMs:p95(drawTimes),viewport:{...layout},sample:sampleTimeline(timeline,elapsed),
-    art:mode,comparison:compare,silhouettes:audit,restoredFrames:manifest.restoredFrames,
+    art:mode,comparison:compare,strictBaselineSilhouettes:audit,restoredFrames:manifest.restoredFrames,edgeMode,edgeReview,edgeAudit,
   };}})});
 }catch(error){canvas.dataset.error=String(error);console.error(error);}

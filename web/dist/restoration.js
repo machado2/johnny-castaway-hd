@@ -1,4 +1,5 @@
-// Original source geometry is authoritative. Generated art contributes finish.
+import {distanceToMask,boundedAlpha,EDGE_PROFILES} from './edge-composite.js';
+// Strict baseline is retained for comparison with bounded generated transparency.
 const make=(w,h)=>{const c=document.createElement('canvas');c.width=w;c.height=h;return c;};
 const read=(c)=>c.getContext('2d',{willReadFrequently:true}).getImageData(0,0,c.width,c.height);
 
@@ -47,6 +48,47 @@ export function restoreSprite(source,generated,crop,factor=6,softness=.28,charac
   for(let i=3;i<painted.data.length;i+=4)painted.data[i]=geometry.data[i];
   g.putImageData(painted,0,0);
   return {image:c,mask,source,factor};
+}
+
+export function edgeVariants(source,generated,crop,kind,factor=6) {
+  if(!generated)return {};
+  const pad=4,w=(source.width+pad*2)*factor,h=(source.height+pad*2)*factor;
+  const reference=make(w,h),r=reference.getContext('2d');r.imageSmoothingEnabled=false;
+  r.drawImage(source,pad*factor,pad*factor,source.width*factor,source.height*factor);
+  const ref=read(reference),occupied=new Uint8Array(w*h),gaps=new Uint8Array(w*h);
+  for(let p=0;p<occupied.length;p++)occupied[p]=ref.data[p*4+3]>127?1:0;
+  // Preserve gaps between limbs/leaves instead of allowing opposing edges to join.
+  for(let y=0;y<h;y++){
+    let left=0,right=w-1;while(left<w&&!occupied[y*w+left])left++;while(right>=0&&!occupied[y*w+right])right--;
+    for(let x=left;x<=right;x++)if(!occupied[y*w+x])gaps[y*w+x]=1;
+  }
+  const distances=distanceToMask(occupied,w,h);
+  const candidate=make(w,h),g=candidate.getContext('2d');g.imageSmoothingQuality='high';
+  const sx=crop[2]/source.width,sy=crop[3]/source.height;
+  g.drawImage(generated,crop[0]-pad*sx,crop[1]-pad*sy,crop[2]+2*pad*sx,crop[3]+2*pad*sy,0,0,w,h);
+  const paint=read(candidate),variants={};
+  for(const [name,profile]of Object.entries(EDGE_PROFILES)){
+    const c=make(w,h),ctx=c.getContext('2d'),out=ctx.createImageData(w,h);out.data.set(paint.data);
+    let trimmed=0,alphaRaised=0,maxOutside=0,protectedGapLeak=0;
+    for(let p=0;p<occupied.length;p++){
+      const y=Math.floor(p/w),padY=(y-pad*factor)/factor;
+      // The lower character area includes the soles and ground shadow; keep a tighter envelope.
+      const red=paint.data[p*4],green=paint.data[p*4+1],blue=paint.data[p*4+2];
+      const neutralShadow=Math.max(red,green,blue)-Math.min(red,green,blue)<18&&red>45&&red<190;
+      const contact=kind==='character'&&padY>=source.height-6&&!neutralShadow;
+      const protectedGap=kind!=='island'&&gaps[p];
+      const radius=Math.min(profile[kind],protectedGap ? .25 : Infinity,contact ? .25 : Infinity);
+      const distance=occupied[p]?0:Math.max(0,(distances[p]-.5)/factor);
+      const before=paint.data[p*4+3],after=boundedAlpha(before,distance,radius);
+      out.data[p*4+3]=after;if(!after)out.data[p*4]=out.data[p*4+1]=out.data[p*4+2]=0;
+      if(after<before)trimmed++;if(after>before)alphaRaised++;
+      if(after>0&&!occupied[p])maxOutside=Math.max(maxOutside,distance);
+      if(after>0&&protectedGap&&distance>=.25)protectedGapLeak++;
+    }
+    ctx.putImageData(out,0,0);
+    variants[name]={image:c,source,factor,pad,audit:{radius:profile[kind],maxOutside,alphaRaised,protectedGapLeak,trimmed}};
+  }
+  return variants;
 }
 
 export function silhouetteAudit(restored) {
