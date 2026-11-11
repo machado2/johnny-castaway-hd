@@ -18,9 +18,9 @@ A [comparação de bordas A/B/C](http://127.0.0.1:4174/?view=edges) mostra o rec
 
 O enquadramento mantém escala uniforme em Full HD, ultrawide, tablet e celular. Só o fundo ocupa a área adicional; ilha, personagem e objetos não são esticados. A animação pausa quando a página fica oculta.
 
-O novo [estudo da caminhada lateral](http://127.0.0.1:4174/walk-study.html) compara a animação HD atual com acabamento mais uniforme e intermediários experimentais. Há também [câmera lenta](http://127.0.0.1:4174/walk-study.html?speed=slow) e [comparação das oito poses](http://127.0.0.1:4174/walk-study.html?view=poses&t=0). O teste está separado da cena principal: uma transição difícil conserva a cadência original, e a troca do desenho usado nos demais intervalos ainda pode ser percebida. Veja [ESTUDO-CAMINHADA.md](ESTUDO-CAMINHADA.md).
+O [estudo da caminhada lateral](http://127.0.0.1:4174/walk-study.html) compara os pixels originais com uma caminhada contínua, em câmera fixa. Os pés mantêm apoio no chão, as pernas preservam sua identidade no cruzamento e a pintura não troca durante o passo. Há [câmera lenta](http://127.0.0.1:4174/walk-study.html?speed=slow) e [oito fases do ciclo](http://127.0.0.1:4174/walk-study.html?view=phases&t=0). O movimento permanece separado da cena principal. A gravação teve baixa frequência nesta sessão e a revisão em primeiro plano ficou pendente; veja evidências e limites em [ESTUDO-CAMINHADA.md](ESTUDO-CAMINHADA.md).
 
-## Como a compatibilidade é mantida
+## Como a compatibilidade da cena principal é mantida
 
 - Os desenhos originais são alvos de edição, com posições, margens e poses registradas. Não se recentralizam os quadros pelo tamanho do personagem.
 - A transparência da arte gerada é preservada dentro de uma faixa ao redor do contorno original. O renderizador apenas reduz sua opacidade nas bordas e nos halos fracos; não transforma franjas semitransparentes em regiões opacas nem põe o original borrado por baixo. Esse preenchimento antigo existe somente na opção A de comparação.
@@ -37,7 +37,7 @@ A cena principal acompanha a atualização da tela, mas **mantém a cadência da
 npm test
 ```
 
-Quinze testes específicos cobrem as seis rotas, viradas, profundidade, cobertura das poses, integridade dos arquivos, frequência, enquadramento, distância ao contorno, opacidade, alinhamento dos recortes com margem e as propriedades geométricas do estudo de intermediários. Os dez testes antigos permanecem como verificações do estudo anterior; não validam a qualidade visual desta restauração nem deste novo estudo.
+Dezessete testes específicos cobrem as seis rotas, viradas, profundidade, cobertura das poses, integridade dos arquivos, enquadramento, contornos, opacidade, alinhamento e propriedades do novo ciclo contínuo, incluindo apoio dos pés e ausência de saltos de posição. Os dez testes antigos permanecem como verificações do primeiro piloto; não validam a qualidade visual desta restauração nem do novo estudo.
 
 [VALIDACAO.md](VALIDACAO.md) registra observações e limites. A faixa comprova um limite de alteração do contorno, não identidade perfeita do rosto nem posicionamento exato de todo detalhe interno. A comparação visual continua necessária. Os detalhes desta revisão estão em [COMPARACAO-BORDAS.md](COMPARACAO-BORDAS.md).
 
