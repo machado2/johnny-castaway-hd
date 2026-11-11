@@ -50,8 +50,8 @@ test('redraws and paused time do not replay sounds',()=>{
 test('all generated sprite cells fit their real source images and retain provenance',()=>{
   const folder=new URL('../web/dist/assets/pilot/',import.meta.url);
   const manifest=JSON.parse(fs.readFileSync(new URL('manifest.json',folder)));
-  assert.equal(manifest.assets.walk.frames.length,16);
-  assert.equal(manifest.assets.fish.frames.length,8);
+  assert.equal(manifest.assets.rig.frames.length,6);
+  assert(manifest.assets.ocean);
   for(const asset of Object.values(manifest.assets)){
     const buffer=fs.readFileSync(new URL(asset.file,folder));
     assert.equal(crypto.createHash('sha256').update(buffer).digest('hex'),asset.sha256);

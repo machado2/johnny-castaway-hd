@@ -16,15 +16,16 @@ def describe(filename, columns=1, rows=1, kind='prop'):
     frames = []
     for row in range(rows):
         for col in range(columns):
-            left, top = round(col * image.width / columns), round(row * image.height / rows)
-            right, bottom = round((col+1) * image.width / columns), round((row+1) * image.height / rows)
+            edges = [0,round(image.height*.56),image.height] if kind=='rig' else [round(r*image.height/rows) for r in range(rows+1)]
+            left, top = round(col * image.width / columns), edges[row]
+            right, bottom = round((col+1) * image.width / columns), edges[row+1]
             cell = alpha.crop((left, top, right, bottom))
             box = cell.point(lambda a: 255 if a > 160 else 0).getbbox()
             if not box:
                 raise ValueError(f'Empty frame {filename}:{len(frames)}')
             x0, y0, x1, y1 = box
-            # Determine a stable body anchor, excluding swinging hands and feet.
-            band = (.34, .54) if kind == 'walk' else (.54, .72) if kind == 'fish' else (.92, .98)
+            # Determine the bottom attachment anchor of each isolated part.
+            band = (.92, .98)
             sample_top = y0 + int((y1-y0)*band[0])
             sample_bottom = y0 + int((y1-y0)*band[1])
             points = []
@@ -40,10 +41,6 @@ def describe(filename, columns=1, rows=1, kind='prop'):
             frames.append({'x':left+sx, 'y':top+sy, 'w':ex-sx, 'h':ey-sy,
                            'anchorX':round(anchor-sx, 3), 'anchorY':y1-sy,
                            'bodyHeight':y1-y0})
-            if kind == 'fish':
-                tips = [(x,y) for x in range(x0,min(x0+4,x1)) for y in range(y0,y1) if pixels[x,y]>160]
-                frames[-1]['rodTip'] = [round(sum(p[0] for p in tips)/len(tips)-sx,3),
-                                       round(sum(p[1] for p in tips)/len(tips)-sy,3)]
     return {'file':filename, 'width':image.width, 'height':image.height, 'frames':frames,
             'sha256':hashlib.sha256((ASSETS/filename).read_bytes()).hexdigest()}
 
@@ -55,10 +52,11 @@ if __name__ == '__main__':
         'assets':{
             'island':describe('island.png'),
             'palm':describe('palm.png'),
-            'walk':describe('johnny-walk.png', 4, 4, 'walk'),
+            'rig':describe('johnny-rig.png', 3, 2, 'rig'),
         }
     }
-    if (ASSETS/'johnny-fish.png').exists():
-        data['assets']['fish'] = describe('johnny-fish.png', 4, 2, 'fish')
-    (ASSETS/'manifest.json').write_text(json.dumps(data, indent=2)+'\n', encoding='utf8')
+    im=Image.open(ASSETS/'ocean.png')
+    data['assets']['ocean']={'file':'ocean.png','width':im.width,'height':im.height,
+                            'frames':[], 'sha256':hashlib.sha256((ASSETS/'ocean.png').read_bytes()).hexdigest()}
+    (ASSETS/'manifest.json').write_text(json.dumps(data, indent=2)+'\n', encoding='utf8', newline='\n')
     print({name:len(asset['frames']) for name,asset in data['assets'].items()})

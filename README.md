@@ -2,7 +2,7 @@
 
 Experiência visual independente da [reconstrução fiel ao original](https://github.com/machado2/johnny-castaway). Este repositório não publica nem altera o site original em castaway.fbmac.net.
 
-O piloto apresenta uma cena de 32 segundos em repetição: Johnny caminha pela ilha, pesca, passa atrás do coqueiro e retorna. Ilha, coqueiro e personagens foram redesenhados a partir das imagens extraídas dos arquivos originais fornecidos. Céu, nuvens, mar, espuma e linha de pesca são desenhados e animados no canvas.
+O piloto apresenta uma cena de 32 segundos em repetição: Johnny caminha pela ilha, pesca, passa atrás do coqueiro e retorna. Ilha, coqueiro, personagem e fundo foram redesenhados a partir das imagens extraídas dos arquivos originais fornecidos. O mar pintado recebe uma ondulação suave; personagem, coqueiro e linha de pesca são animados no canvas.
 
 ## Ver localmente
 
@@ -18,11 +18,12 @@ Apenas o canvas é visível. O enquadramento se adapta a ultrawide, Full HD, tab
 
 ## O que o piloto implementa
 
-- Arte nova com transparência: ilha, coqueiro, 16 poses de caminhada e oito poses de pesca.
-- Apresentação sincronizada com a tela, aproximadamente 60 fps nos testes locais; posições, mar, nuvens e balanço do coqueiro são atualizados a cada apresentação.
-- As poses desenhadas são discretas: não há 60 desenhos inéditos por segundo nem interpolação artificial por dissolução.
+- Arte nova: ilha baixa com o contorno da referência original, coqueiro, personagem articulado e panorama pintado de céu e mar.
+- Pernas com articulações de comprimento constante; o pé de apoio permanece parado em relação à areia enquanto o outro avança. O ciclo depende da distância percorrida, para evitar deslizar ou pedalar no lugar.
+- Percurso e altura dos pés calculados a partir da região opaca da própria imagem da ilha. Caminhada, parada e pesca reutilizam o mesmo corpo.
+- Apresentação sincronizada com a tela por requestAnimationFrame. As articulações são calculadas continuamente; não há troca de poses inteiras independentes nem dissolução entre desenhos.
 - Escala uniforme, limites de densidade e de resolução interna para controlar o custo de desenho; a geometria permanece independente da densidade de pixels.
-- Camadas de profundidade, ancoragem dos pés e linha presa à ponta da vara em cada pose.
+- Camadas de profundidade, passagem atrás do coqueiro e linha presa à geometria da vara.
 - Dois efeitos extraídos do original, também referenciados por MJFISH.TTM, reutilizados em pontos próprios deste piloto. O sincronismo é demonstrativo.
 - Nenhuma leitura ou escrita da progressão salva do projeto original.
 
@@ -34,7 +35,7 @@ Este é um estudo de arte e movimento, com uma sequência própria. Ainda não e
 npm test
 ```
 
-Os testes cobrem enquadramento, continuidade dos caminhos, frequência de apresentação, eventos sonoros sem duplicação, associação das imagens com seus hashes e isolamento da progressão original.
+Os dez testes cobrem apoio dos pés sem deslizamento, alternância das passadas, comprimentos das pernas, detecção da areia, enquadramento, continuidade dos caminhos, frequência de apresentação, eventos sonoros sem duplicação, hashes das imagens e isolamento da progressão original.
 
 Verificações de navegador e limites da medição estão em [VALIDACAO.md](VALIDACAO.md). A visualização de celular foi simulada no desktop, não testada em telefone físico. Safari/iOS ainda não foi validado.
 
@@ -42,7 +43,7 @@ Para examinar um instante sem avançar a animação, use [/?t=10](http://127.0.0
 
 ## Arte e origem
 
-Os arquivos finais estão em `web/dist/assets/pilot/`. Os [prompts de geração e correção](art/PROMPTS.md) e a [proveniência](art/provenance.json) registram as referências e os arquivos selecionados. A arte foi produzida com a ferramenta integrada de geração de imagens e revisada em composição. A transparência das poses de pesca passou por uma correção adicional.
+Os arquivos finais estão em `web/dist/assets/pilot/`. Os [prompts de geração e correção](art/PROMPTS.md) e a [proveniência](art/provenance.json) registram as referências e os arquivos selecionados. A arte foi produzida com a ferramenta integrada de geração de imagens e revisada em composição. Os membros são desenhados com contornos articulados e textura da arte gerada; cabeça, tronco, mãos e pés usam os recortes da mesma folha. A primeira tentativa com poses inteiras independentes foi substituída após revisão.
 
 `python tools/pilot_manifest.py` regenera apenas as coordenadas e os metadados dos recortes, sem editar as imagens. Requer Pillow, como a extração do projeto original.
 

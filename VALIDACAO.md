@@ -1,27 +1,31 @@
-# Validação do piloto HD
+# Validação do piloto HD revisado
 
-Data: 10/11/2026. Testes locais em Windows, Edge instalado, usando navegador automatizado sem janela. Medições curtas para verificar a viabilidade do piloto, sem equivaler a um teste prolongado em todos os aparelhos.
+Data: 10/11/2026. Windows, navegador interno baseado em Chromium. A revisão substitui as poses inteiras da primeira tentativa por articulações contínuas, recompõe a ilha e usa um oceano pintado.
 
-## Resultados
+## Fluidez observada
 
 | Área de apresentação | Densidade solicitada | Média observada | P95 do intervalo entre apresentações | P95 do trabalho JS de desenho |
 |---|---:|---:|---:|---:|
-| 1920×1080 | 1 | 59,2 fps | 16,8 ms | 2,0 ms |
-| 2560×1080 | 1 | 59,8 fps | 16,8 ms | 2,4 ms |
-| 390×844, celular simulado | 3, limitada a 2 pelo piloto | 59,6 fps | 16,9 ms | 1,8 ms |
+| 1920×1080 | 1 | 60,0 fps | 17,0 ms | 1,0 ms |
+| 2560×1080 | 1 | 60,0 fps | 16,8 ms | 0,8 ms |
+| 390×844, celular simulado | 3, limitada a 2 | 60,0 fps | 16,8 ms | 0,9 ms |
 
-O tempo JS de desenho não mede isoladamente todo o custo de GPU/composição. As janelas de observação foram de aproximadamente 9, 7 e 5 segundos, respectivamente. A medição ocorreu durante a integração; a correção final da transparência da pesca foi verificada depois por imagens nas mesmas dimensões.
+Estatísticas dos últimos 300 quadros, cerca de cinco segundos, coletadas após 34, 33 e 23 segundos de execução respectivamente. O tempo JS de desenho não mede isoladamente todo o custo de GPU/composição. São medições locais curtas, sem garantia de 60 fps em todo aparelho. A velocidade da cena é baseada no tempo e a passada na distância, independentemente da frequência da tela.
 
-- Nenhuma exceção de página nos cenários exercitados.
-- Áudio desbloqueado por clique e contexto de reprodução em execução.
-- Pausa e retomada verificadas, sem avançar o tempo oculto. A mudança de visibilidade foi simulada no teste automatizado.
-- Armazenamento local permaneceu vazio no contexto isolado; não houve alteração de progressão.
-- Capturas revisadas em 1920×1080 (caminhada e pesca), 2560×1080 (passagem atrás do coqueiro) e 390×844 (pesca em retrato).
-- Prévia animada aberta também no navegador interno para inspeção visual.
-- Seis testes automatizados de lógica e integridade de recursos aprovados. Incluem vários tamanhos, de 320×568 a 5120×1440, densidades fracionárias e relógios de 30 a 144 Hz.
+## Verificações
 
-Os relatórios brutos e capturas locais ficam em `artifacts/`, fora do Git. Não foram validados dispositivos móveis físicos, Safari/iOS, consumo de bateria, sessões prolongadas, perda de contexto de GPU nem todos os eventos da história original.
+- Dez testes automatizados aprovados: pé de apoio estacionário nos dois sentidos, alternância sem saltos no ciclo, comprimento das pernas, identificação da faixa de areia, enquadramento, continuidade do percurso, relógios de 30 a 144 Hz, sons sem repetição, integridade das imagens e isolamento da progressão original.
+- A matriz de enquadramento vai de 320×568 a 5120×1440 e inclui 4K, retrato, paisagem e densidades fracionárias. São testes de geometria, não medições de desempenho em cada resolução.
+- Capturas inspecionadas em Full HD, ultrawide e retrato: caminhada com um pé de apoio e outro em balanço, pesca e passagem atrás do coqueiro.
+- Apoio calculado a partir do contorno opaco da areia, em vez de uma linha horizontal que atravessava a água.
+- O personagem mantém o mesmo tronco, mãos e pés entre caminhada e pesca. A água recebe deslocamento suave e pequenas cristas junto à margem.
+- Nenhum erro de página registrado durante os cenários exercitados.
+- Na integração anterior, também foram verificados desbloqueio de áudio por clique, pausa/retomada ao ocultar a página e armazenamento local vazio. Esse código foi mantido nesta revisão; as medições da tabela são da arte e do movimento novos.
 
-## Isolamento
+Os relatórios `revised-performance-*.json` e as capturas `revised-*.png` ficam em `artifacts/`, fora do Git. Não foram validados telefones físicos, Safari/iOS, consumo de bateria nem sessões prolongadas. A sequência é um piloto autoral de 32 segundos, não a reprodução completa dos eventos originais.
 
-O projeto original continua em `../johnycastaway`, com servidor na porta 4173 e publicação própria. O HD usa porta 4174, arquivos e repositório independentes, sem CNAME, configuração de Pages ou alterações de DNS. Os arquivos de execução do original foram comparados com a tag anterior ao piloto e não têm alterações.
+## Isolamento e versões
+
+O projeto original continua em `../johnycastaway`, com servidor na porta 4173 e publicação própria. Seus arquivos de execução, ferramentas, testes e AGENTS.md foram comparados com `pre-hd-pilot-2026-11-10` e não têm alterações. O plano foi transferido para este projeto; não houve publicação sobre o site original.
+
+O HD tem repositório próprio, porta 4174, sem CNAME, configuração de Pages ou alterações de DNS. A tag `pilot-art-study-v1` preserva localmente o primeiro estudo de arte; `v0.1.0-pilot` identifica a revisão com nova caminhada, ilha e oceano.

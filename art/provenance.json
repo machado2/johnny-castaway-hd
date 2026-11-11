@@ -17,19 +17,26 @@
   "art": {
     "island": {
       "file": "island.png",
-      "sha256": "c3ec362ae25b00684e16226da4c2eb57ffab5cd803e6b735325a2d0728ddf437"
+      "sha256": "62f930660667b189e12d9eed6a66e4c34b00fa9bab63831655fa3f5e9594af5c"
     },
     "palm": {
       "file": "palm.png",
       "sha256": "6f8aa8ff83893f4a1890831d5fdc35d72efbc80c7633e599b485889c079e74eb"
     },
-    "walk": {
-      "file": "johnny-walk.png",
-      "sha256": "992166c4558e5490c82a1e31a8bb34ce2d3317181e76bf47e0353d06e7944e7e"
+    "rig": {
+      "file": "johnny-rig.png",
+      "sha256": "349a86968bb04dc47eaf9d2debeffd510ed8fb92086ee9400e8ec400024f3bc2"
     },
-    "fish": {
-      "file": "johnny-fish.png",
-      "sha256": "c8f0f68031e2e192f861a77f6bf76d217217b4797b9de24f4fc07ba4a2bbe7f2"
+    "ocean": {
+      "file": "ocean.png",
+      "sha256": "13a2d3e77e8f4499163382dedf598773e5591edaad5a722d0567bc6a23c674e1"
     }
+  },
+  "revision": "Original island silhouette restored; painted ocean; modular character with continuous articulated gait. First whole-body generated walk/fishing sequences retired.",
+  "selectedGenerations": {
+    "island": "exec-cf05a58a-8deb-4284-8c41-339c84609a7b.png",
+    "palm": "exec-3ca676c6-c1cc-4a82-81ca-db616b0070e6.png",
+    "rig": "exec-39186c92-2f58-4a36-974e-0d2b58e4ef8c.png",
+    "ocean": "exec-dbb56051-5bb3-4c9a-a8e7-2ae871ef9cb8.png"
   }
 }
