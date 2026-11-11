@@ -1,17 +1,18 @@
 import {cropOriginal,edgeVariants} from './restoration.js';
+import {carriedRodMask} from './fishing-rod.js';
 import {sampleFishing,fishingBounds,buildFishingLoop,smoothFishingLine} from './fishing-motion.js';
 
 export async function loadFishing(walkSource){
   const base=new URL('./assets/fishing/',import.meta.url);
   const json=async name=>{const r=await fetch(new URL(name,base));if(!r.ok)throw new Error(`Fishing: ${name} (${r.status})`);return r.json();};
   const image=async name=>{const im=new Image();im.src=new URL(name,base);await im.decode();return im;};
-  const [source,manifest]=await Promise.all([json('source.json'),json('restored.json')]);
+  const [source,manifest,rodGuides]=await Promise.all([json('source.json'),json('restored.json'),json('rod-guides.json')]);
   const [originals,generated,water,waterArt]=await Promise.all([
     Promise.all(source.groups.map(g=>image(g.source))),Promise.all(manifest.groups.map(g=>image(g.file))),image('source-water.png'),image(manifest.water.file)]);
   const poses=[];
   for(const p of source.poses){
     const raw=cropOriginal(originals[p.group],{x:p.sx,y:p.sy,w:p.w,h:p.h});
-    const variants=edgeVariants(raw,generated[p.group],manifest.poses[p.id].crop,'character',4);
+    const variants=edgeVariants(raw,generated[p.group],manifest.poses[p.id].crop,'character',4,carriedRodMask(p,rodGuides));
     poses.push({source:raw,image:variants.large.image,pad:variants.large.pad,variants});
     // Yield between whole poses so mobile browsers can paint during preparation.
     if(p.id%6===5)await new Promise(resolve=>setTimeout(resolve,0));
