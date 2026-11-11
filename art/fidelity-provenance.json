@@ -1,0 +1,61 @@
+{
+  "date": "2026-11-11",
+  "method": "Integrated image editing from extracted original pixels; generated PNGs copied unchanged. Runtime original-derived geometry masks and ocean guide.",
+  "selected": {
+    "island": {
+      "outputFile": "exec-1a16a408-bc91-4f51-96d5-7ada95bc0250.png",
+      "file": "../web/dist/assets/fidelity/restored-island.png",
+      "reference": "references/island-target.png"
+    },
+    "palm": {
+      "outputFile": "exec-c2dd7d2e-26fa-4344-9bd6-571b16a4d005.png",
+      "file": "../web/dist/assets/fidelity/restored-palm.png",
+      "reference": "references/palm-target.png"
+    },
+    "ocean": {
+      "outputFile": "exec-468748d4-ae67-4105-ba60-5c357e6390fa.png",
+      "file": "../web/dist/assets/fidelity/restored-ocean.png",
+      "reference": "references/ocean-target.png"
+    },
+    "walk-a": {
+      "outputFile": "exec-6d5403ff-f95e-4d1b-ba90-d1a248fc63d9.png",
+      "file": "../web/dist/assets/fidelity/restored-walk-a.png",
+      "reference": "references/walk-a-target.png"
+    },
+    "walk-b": {
+      "outputFile": "exec-f6638eb5-988f-4727-aa00-26320386f960.png",
+      "file": "../web/dist/assets/fidelity/restored-walk-b.png",
+      "reference": "references/walk-b-target.png"
+    },
+    "turn-a": {
+      "outputFile": "exec-f82607c8-ea8d-402d-90e6-057a042744ff.png",
+      "file": "../web/dist/assets/fidelity/restored-turn-a.png",
+      "reference": "references/turn-a-target.png"
+    },
+    "turn-b": {
+      "outputFile": "exec-88bbac7d-418f-4a71-bd0b-fdc136ae35b9.png",
+      "file": "../web/dist/assets/fidelity/restored-turn-b.png",
+      "reference": "references/turn-b-target.png"
+    },
+    "turn-c": {
+      "outputFile": "exec-e373e19a-28b6-4f38-8f1d-27930a34f086.png",
+      "file": "../web/dist/assets/fidelity/restored-turn-c.png",
+      "reference": "references/turn-c-target.png"
+    },
+    "turn-d": {
+      "outputFile": "exec-072fc92f-e702-47a5-b15f-36e27b843c4b.png",
+      "file": "../web/dist/assets/fidelity/restored-turn-d.png",
+      "reference": "references/turn-d-target.png"
+    },
+    "turn-e": {
+      "outputFile": "exec-46f75195-3e04-4dd5-9154-8c1cfeea8dd6.png",
+      "file": "../web/dist/assets/fidelity/restored-turn-e.png",
+      "reference": "references/turn-e-target.png"
+    }
+  },
+  "corrections": {
+    "walk-b": "Local mouth and beard edit of initial walk-b, using walk-a only as style reference. An earlier regeneration was rejected for shifts.",
+    "turn-c": "Regenerated with all four figures facing left; turn-d top row used as style/orientation reference. Initial sheet had two reversed poses and was rejected."
+  },
+  "scope": "28 restored poses, 25 used in six original walking routes; island, palm, ocean. Not the complete original image catalogue."
+}

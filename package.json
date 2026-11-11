@@ -5,6 +5,7 @@
   "scripts": {
     "start": "node tools/serve.mjs",
     "test": "node --test tests/*.test.mjs",
-    "assets:manifest": "python tools/pilot_manifest.py"
+    "assets:manifest": "python tools/fidelity_manifest.py",
+    "assets:extract": "python tools/extract_fidelity.py"
   }
 }

@@ -1,5 +1,7 @@
 # Plano de remasterização: resolução adaptável, arte nova e animação suave
 
+Atualização de direção em 11/11/2026: o movimento articulado do primeiro piloto foi rejeitado visualmente. O piloto atual preserva poses e tabelas originais, com restauração de acabamento também na ilha, coqueiro e mar. Novos quadros intermediários ficam para uma etapa posterior. As alternativas e o experimento estão em [Estratégias para a caminhada](ESTRATEGIAS-CAMINHADA.md). Essa revisão prevalece sobre qualquer sugestão de recriar livremente a caminhada.
+
 Plano preparado em 10/11/2026 a partir do código e dos recursos do projeto original em `../johnycastaway`. Por orientação posterior do usuário, a experiência HD passa a ter repositório independente. Este documento descreve o escopo completo futuro; o estado do piloto está documentado no README deste repositório.
 
 ## Resultado pretendido

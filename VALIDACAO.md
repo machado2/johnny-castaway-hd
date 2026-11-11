@@ -1,31 +1,36 @@
-# Validação do piloto HD revisado
+# Validação da restauração piloto
 
-Data: 10/11/2026. Windows, navegador interno baseado em Chromium. A revisão substitui as poses inteiras da primeira tentativa por articulações contínuas, recompõe a ilha e usa um oceano pintado.
+Data: 11/11/2026. Windows, navegador interno baseado em Chromium. Esta revisão substitui a caminhada articulada por poses e percursos extraídos do original, e refaz o acabamento de todos os elementos da cena de caminhada.
 
-## Fluidez observada
+## Compatibilidade e revisão visual
 
-| Área de apresentação | Densidade solicitada | Média observada | P95 do intervalo entre apresentações | P95 do trabalho JS de desenho |
+- Sete testes novos aprovados: seis percursos completos, viradas, regra de profundidade, todas as poses usadas com arte correspondente, hashes, frequência de apresentação independente da lógica e enquadramento. A suíte completa tem 17 testes; os dez antigos dizem respeito ao piloto anterior.
+- A cena usa 25 poses distintas entre as 28 restauradas. Índices, coordenadas e espelhamentos das seis rotas são comparados integralmente com as tabelas extraídas.
+- Ilha, coqueiro e 25 poses ativas: nenhuma expansão de opacidade além da faixa de um pixel original ao redor da silhueta e nenhuma perda no interior fora dessa faixa. A máscara final também coincide com a máscara suavizada usada pelo renderizador.
+- Essa verificação demonstra a restrição de contorno, não a qualidade anatômica ou a identidade de cada detalhe. A revisão ampliada encontrou uma tentativa deslocada de walk-b e duas poses invertidas em turn-c. Esses resultados foram rejeitados; as folhas selecionadas foram corrigidas e reinspecionadas.
+- Foram comparadas as oito poses laterais e as cinco folhas de virada, além da composição completa sincronizada. Ainda há variações de desenho interno entre folhas, especialmente no rosto; o piloto serve para avaliar esse acabamento, não é aprovação artística definitiva de todo o catálogo.
+- A passagem atrás do coqueiro foi conferida no instante 8,4 s; o limite de profundidade reproduz a linha original em y=293. As coordenadas dos percursos não foram adaptadas a uma ilha redesenhada.
+- O mar mantém as grandes regiões de cor do original e recebe textura da geração. Sua ondulação é demonstrativa; a sequência completa da água ainda não foi restaurada.
+- A extensão do céu no retrato foi corrigida após a captura revelar uma emenda de cor. A captura final usa a cor da própria primeira linha do fundo.
+
+## Apresentação observada
+
+| Área | Densidade solicitada | Média | P95 do intervalo | P95 do desenho JS |
 |---|---:|---:|---:|---:|
-| 1920×1080 | 1 | 60,0 fps | 17,0 ms | 1,0 ms |
-| 2560×1080 | 1 | 60,0 fps | 16,8 ms | 0,8 ms |
-| 390×844, celular simulado | 3, limitada a 2 | 60,0 fps | 16,8 ms | 0,9 ms |
+| 1920×1080 | 1 | 60,0 fps | 16,9 ms | 0,5 ms |
+| 2560×1080 | 1 | 60,0 fps | 16,9 ms | 0,6 ms |
+| 390×844, celular simulado | 3, limitada a 2 | 60,0 fps | 16,9 ms | 0,6 ms |
 
-Estatísticas dos últimos 300 quadros, cerca de cinco segundos, coletadas após 34, 33 e 23 segundos de execução respectivamente. O tempo JS de desenho não mede isoladamente todo o custo de GPU/composição. São medições locais curtas, sem garantia de 60 fps em todo aparelho. A velocidade da cena é baseada no tempo e a passada na distância, independentemente da frequência da tela.
+Amostras dos últimos 300 intervalos após aproximadamente 29, 39 e 41 segundos de execução. O ajuste posterior do céu foi revisto visualmente e não teve nova medição de desempenho. O tempo JS não mede todo o trabalho de GPU/composição. Nenhum erro ou aviso de página foi registrado nos cenários medidos.
 
-## Verificações
+Esses números são a frequência de apresentação do canvas. **As poses e os deslocamentos ainda seguem a cadência original**, sem 60 desenhos novos por segundo, interpolação ou dissolução. A próxima etapa de fluidez precisa criar intermediários mantendo apoio dos pés e ordem dos membros.
 
-- Dez testes automatizados aprovados: pé de apoio estacionário nos dois sentidos, alternância sem saltos no ciclo, comprimento das pernas, identificação da faixa de areia, enquadramento, continuidade do percurso, relógios de 30 a 144 Hz, sons sem repetição, integridade das imagens e isolamento da progressão original.
-- A matriz de enquadramento vai de 320×568 a 5120×1440 e inclui 4K, retrato, paisagem e densidades fracionárias. São testes de geometria, não medições de desempenho em cada resolução.
-- Capturas inspecionadas em Full HD, ultrawide e retrato: caminhada com um pé de apoio e outro em balanço, pesca e passagem atrás do coqueiro.
-- Apoio calculado a partir do contorno opaco da areia, em vez de uma linha horizontal que atravessava a água.
-- O personagem mantém o mesmo tronco, mãos e pés entre caminhada e pesca. A água recebe deslocamento suave e pequenas cristas junto à margem.
-- Nenhum erro de página registrado durante os cenários exercitados.
-- Na integração anterior, também foram verificados desbloqueio de áudio por clique, pausa/retomada ao ocultar a página e armazenamento local vazio. Esse código foi mantido nesta revisão; as medições da tabela são da arte e do movimento novos.
+A matriz automatizada vai de 320×568 a 5120×1440 e inclui 4K, retrato, paisagem e densidades fracionárias. As três áreas da tabela também foram inspecionadas visualmente. Não foram testados telefone físico, Safari/iOS, bateria ou sessões prolongadas.
 
-Os relatórios `revised-performance-*.json` e as capturas `revised-*.png` ficam em `artifacts/`, fora do Git. Não foram validados telefones físicos, Safari/iOS, consumo de bateria nem sessões prolongadas. A sequência é um piloto autoral de 32 segundos, não a reprodução completa dos eventos originais.
+## Arquivos e isolamento
 
-## Isolamento e versões
+Relatórios `fidelity-*.json` e capturas `fidelity-*.png` estão em `artifacts/`, fora do Git. A comparação animada é acessível em `/?view=compare`; o instante `?view=compare&t=1.4` reproduz a captura final.
 
-O projeto original continua em `../johnycastaway`, com servidor na porta 4173 e publicação própria. Seus arquivos de execução, ferramentas, testes e AGENTS.md foram comparados com `pre-hd-pilot-2026-11-10` e não têm alterações. O plano foi transferido para este projeto; não houve publicação sobre o site original.
+Toda a implementação desta revisão está em johnny-castaway-hd, com servidor local na porta 4174. O checkout original estava limpo na verificação final; esta revisão não escreveu nele nem publicou sobre seu site, domínio ou DNS. O HD não tem CNAME nem configuração de publicação Pages.
 
-O HD tem repositório próprio, porta 4174, sem CNAME, configuração de Pages ou alterações de DNS. A tag `pilot-art-study-v1` preserva localmente o primeiro estudo de arte; `v0.1.0-pilot` identifica a revisão com nova caminhada, ilha e oceano.
+A tag `v0.1.0-pilot` preserva o estudo anterior com membros articulados. `v0.2.0-fidelity-pilot` identifica esta restauração de caminhada. A seleção demonstrativa dura aproximadamente 20 segundos e não executa pesca, áudio, capítulos ou a história completa.

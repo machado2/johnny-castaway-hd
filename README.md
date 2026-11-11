@@ -1,50 +1,49 @@
-# Johnny Castaway HD — cena piloto
+# Johnny Castaway HD — restauração piloto
 
-Experiência visual independente da [reconstrução fiel ao original](https://github.com/machado2/johnny-castaway). Este repositório não publica nem altera o site original em castaway.fbmac.net.
+Experiência independente da [reconstrução original](https://github.com/machado2/johnny-castaway). Este repositório não altera nem publica sobre castaway.fbmac.net.
 
-O piloto apresenta uma cena de 32 segundos em repetição: Johnny caminha pela ilha, pesca, passa atrás do coqueiro e retorna. Ilha, coqueiro, personagem e fundo foram redesenhados a partir das imagens extraídas dos arquivos originais fornecidos. O mar pintado recebe uma ondulação suave; personagem, coqueiro e linha de pesca são animados no canvas.
+O piloto atual aplica acabamento novo à geometria extraída do original: ilha, sombra, coqueiro, céu/mar e 28 poses de Johnny. A cena usa 25 dessas poses em seis percursos originais, com viradas, pausas e passagem atrás do tronco. O circuito demonstrativo dura aproximadamente 20 segundos; sua seleção e ordem são próprias deste piloto.
 
 ## Ver localmente
 
-Requer Node.js. Nenhuma dependência npm é necessária para executar ou testar.
+Requer Node.js, sem dependências npm:
 
 ```text
 npm start
 ```
 
-Abra [http://127.0.0.1:4174](http://127.0.0.1:4174). A animação começa automaticamente; um clique no canvas libera os efeitos sonoros. O servidor escuta somente em 127.0.0.1. As imagens e os sons são locais, sem chamadas externas durante a reprodução.
+Abra [a cena animada](http://127.0.0.1:4174/) ou a [comparação sincronizada: original à esquerda, restauração à direita](http://127.0.0.1:4174/?view=compare). A página exibe somente o canvas. Todos os arquivos são locais, e o servidor escuta apenas em 127.0.0.1.
 
-Apenas o canvas é visível. O enquadramento se adapta a ultrawide, Full HD, tablet e celular sem distorcer os desenhos. Alterar o tamanho da janela ou a densidade da tela não muda a velocidade da animação. Ao ocultar a página, a animação pausa.
+O enquadramento mantém escala uniforme em Full HD, ultrawide, tablet e celular. Só o fundo ocupa a área adicional; ilha, personagem e objetos não são esticados. A animação pausa quando a página fica oculta.
 
-## O que o piloto implementa
+## Como a compatibilidade é mantida
 
-- Arte nova: ilha baixa com o contorno da referência original, coqueiro, personagem articulado e panorama pintado de céu e mar.
-- Pernas com articulações de comprimento constante; o pé de apoio permanece parado em relação à areia enquanto o outro avança. O ciclo depende da distância percorrida, para evitar deslizar ou pedalar no lugar.
-- Percurso e altura dos pés calculados a partir da região opaca da própria imagem da ilha. Caminhada, parada e pesca reutilizam o mesmo corpo.
-- Apresentação sincronizada com a tela por requestAnimationFrame. As articulações são calculadas continuamente; não há troca de poses inteiras independentes nem dissolução entre desenhos.
-- Escala uniforme, limites de densidade e de resolução interna para controlar o custo de desenho; a geometria permanece independente da densidade de pixels.
-- Camadas de profundidade, passagem atrás do coqueiro e linha presa à geometria da vara.
-- Dois efeitos extraídos do original, também referenciados por MJFISH.TTM, reutilizados em pontos próprios deste piloto. O sincronismo é demonstrativo.
-- Nenhuma leitura ou escrita da progressão salva do projeto original.
+- Os desenhos originais são alvos de edição, com posições, margens e poses registradas. Não se recentralizam os quadros pelo tamanho do personagem.
+- A transparência final é reconstruída a partir do contorno original, com uma faixa estreita de suavização. A geração fornece acabamento, mas não define a silhueta final. Isso preserva também os espaços entre braços, pernas e folhas.
+- Pequenas lacunas da arte gerada recebem uma base de cor do original. No personagem, essa base resolve a alternância de pixels vermelhos e brancos como pele, evitando manchas vermelhas nas bordas.
+- O mar conserva as grandes regiões de cor e ondas do original; a pintura gerada contribui textura e uma pequena parcela da cor. O horizonte permanece alinhado. A ondulação demonstrativa é discreta e não reproduz ainda toda a sequência de água original.
+- Índices dos quadros, posições, espelhamentos e regra de profundidade vêm das tabelas extraídas de SCRANTIC. A composição da ilha e do coqueiro usa BACKGRND.BMP; personagem e fundo usam JOHNWALK.BMP e OCEAN00.SCR.
 
-Este é um estudo de arte e movimento, com uma sequência própria. Ainda não executa o catálogo completo TTM/ADS, os capítulos, o calendário ou a história original. O renderizador do piloto usa Canvas 2D. A produção completa da arte, a integração da história e a avaliação de WebGL permanecem no [plano de remasterização](PLANO-REMASTERIZACAO.md).
+A página acompanha a atualização da tela, mas **mantém a cadência das poses originais**. Ainda não há 60 poses distintas por segundo nem interpolação entre membros. A prioridade desta revisão é corrigir fidelidade e contato com o cenário antes de criar intermediários.
 
-## Validação
+## Revisão e testes
 
 ```text
 npm test
 ```
 
-Os dez testes cobrem apoio dos pés sem deslizamento, alternância das passadas, comprimentos das pernas, detecção da areia, enquadramento, continuidade dos caminhos, frequência de apresentação, eventos sonoros sem duplicação, hashes das imagens e isolamento da progressão original.
+Sete testes específicos cobrem as seis rotas, viradas, profundidade, cobertura das poses, integridade dos arquivos, independência da frequência de apresentação e enquadramento de 320×568 até 5120×1440/4K. Os dez testes antigos permanecem como verificações do estudo anterior; não validam a qualidade visual desta restauração.
 
-Verificações de navegador e limites da medição estão em [VALIDACAO.md](VALIDACAO.md). A visualização de celular foi simulada no desktop, não testada em telefone físico. Safari/iOS ainda não foi validado.
+[VALIDACAO.md](VALIDACAO.md) registra observações e limites. A máscara comprova compatibilidade do contorno, não identidade perfeita do rosto nem posicionamento exato de todo detalhe interno. A comparação visual continua necessária.
 
-Para examinar um instante sem avançar a animação, use [/?t=10](http://127.0.0.1:4174/?t=10). O parâmetro serve para revisão e testes; a página sem parâmetro é animada. Diagnósticos somente de leitura ficam em `window.castawayPilot.status`.
+Para congelar um instante, acrescente `?t=8.4`. Para comparar as oito poses laterais use `?view=poses&t=0`; as folhas de virada podem ser inspecionadas acrescentando `&group=turn-a` até `turn-e`. Diagnósticos somente de leitura: `window.castawayFidelity.status`.
 
-## Arte e origem
+## Arte, rastreabilidade e escopo
 
-Os arquivos finais estão em `web/dist/assets/pilot/`. Os [prompts de geração e correção](art/PROMPTS.md) e a [proveniência](art/provenance.json) registram as referências e os arquivos selecionados. A arte foi produzida com a ferramenta integrada de geração de imagens e revisada em composição. Os membros são desenhados com contornos articulados e textura da arte gerada; cabeça, tronco, mãos e pés usam os recortes da mesma folha. A primeira tentativa com poses inteiras independentes foi substituída após revisão.
+Os arquivos ativos estão em `web/dist/assets/fidelity/`. `source.json` registra a extração e o posicionamento; `restored.json` registra imagens selecionadas, dimensões efetivas e hashes. Os [prompts](art/FIDELITY-PROMPTS.md) e [origens das gerações](art/fidelity-provenance.json) documentam o processo. Os PNG gerados foram copiados sem edição; máscaras e composição são aplicadas no renderizador.
 
-`python tools/pilot_manifest.py` regenera apenas as coordenadas e os metadados dos recortes, sem editar as imagens. Requer Pillow, como a extração do projeto original.
+`npm run assets:extract` reextrai as referências a partir dos recursos decodificados no projeto original vizinho. `npm run assets:manifest` atualiza somente os metadados da arte selecionada. Ambos requerem Python e Pillow; não são necessários para executar a cena.
 
-Johnny Castaway e os efeitos originais são conteúdo do software Sierra/Dynamix. A arte recriada é uma interpretação visual para este piloto; não é apresentada como arte original recuperada. Nenhuma outra reimplementação foi consultada.
+A versão anterior com membros articulados está preservada no histórico/tag `v0.1.0-pilot`. Seus arquivos `pilot.js` e `assets/pilot/` não são carregados pela página atual. Esta cena se limita à caminhada: ainda não restaura pesca, catálogo completo, capítulos, calendário, áudio ou história. A ampliação completa continua no [plano](PLANO-REMASTERIZACAO.md).
+
+Johnny Castaway e os recursos originais são conteúdo Sierra/Dynamix. Os detalhes recriados são interpretações de acabamento, não recuperação comprovada de informação perdida. Nenhuma outra reimplementação foi consultada.
