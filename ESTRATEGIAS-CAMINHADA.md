@@ -1,6 +1,6 @@
 # Caminhada HD fiel aos quadros originais
 
-Revisão de direção em 11/11/2026, após a avaliação do piloto pelo usuário. O experimento de restauração foi implementado depois desta análise: poses e percursos extraídos, edição conservadora, transparência guiada pela silhueta original e comparação sincronizada. O estado e os limites estão no README e em VALIDACAO.md. Os intermediários de animação continuam sendo uma etapa posterior.
+Revisão de direção em 11/11/2026, após a avaliação do piloto pelo usuário. O experimento de restauração foi implementado depois desta análise: poses e percursos extraídos, edição conservadora, transparência guiada pela silhueta original e comparação sincronizada. O estado e os limites estão no README e em VALIDACAO.md. Um primeiro teste isolado de intermediários está documentado em ESTUDO-CAMINHADA.md; a cena principal continua com a cadência original.
 
 ## Diagnóstico
 

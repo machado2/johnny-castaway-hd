@@ -1,0 +1,42 @@
+{
+  "date": "2026-11-11",
+  "status": "experimental-review",
+  "defaultSceneChanged": false,
+  "restoredKeys": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+  ],
+  "editedKeys": [
+    5,
+    6,
+    7,
+    8
+  ],
+  "generatedFile": "exec-6b507f9f-a1d2-4d30-945f-a0639d0f0f98.png",
+  "method": "Integrated image generator: local identity and garment harmonization. Runtime intermediate frames: single painted sprite warped between measured key poses; no texture crossfade.",
+  "originalRoute": 3,
+  "originalRouteFrames": [
+    0,
+    8
+  ],
+  "substeps": 8,
+  "heldTransitions": [
+    [
+      3,
+      4
+    ]
+  ],
+  "sha256": {
+    "source.json": "e13e27350e676a7e1618185c99c3e5e8a26697459373b7ad0627c608ae862b3b",
+    "source-walk.png": "6b75a6cd89c8c98ba48cb3880dd5b978f92cf2b9011fedb1a6ae0831eef215ae",
+    "restored-walk-a.png": "e283bc7f36b9a14ffcf4df493d050456da9f5dd5e1149f62f9f6071b503c3a33",
+    "restored-walk-b.png": "48a8e216104e0acca4f24d339da76a4caa1460d5868311784035606537b4fd29",
+    "restored-walk-b-v2.png": "210ad9a7185debe36d42dc9ccb5f926610345f14bb769c3c63e61726fb618af8"
+  }
+}

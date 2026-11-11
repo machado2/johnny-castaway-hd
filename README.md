@@ -18,6 +18,8 @@ A [comparação de bordas A/B/C](http://127.0.0.1:4174/?view=edges) mostra o rec
 
 O enquadramento mantém escala uniforme em Full HD, ultrawide, tablet e celular. Só o fundo ocupa a área adicional; ilha, personagem e objetos não são esticados. A animação pausa quando a página fica oculta.
 
+O novo [estudo da caminhada lateral](http://127.0.0.1:4174/walk-study.html) compara a animação HD atual com acabamento mais uniforme e intermediários experimentais. Há também [câmera lenta](http://127.0.0.1:4174/walk-study.html?speed=slow) e [comparação das oito poses](http://127.0.0.1:4174/walk-study.html?view=poses&t=0). O teste está separado da cena principal: uma transição difícil conserva a cadência original, e a troca do desenho usado nos demais intervalos ainda pode ser percebida. Veja [ESTUDO-CAMINHADA.md](ESTUDO-CAMINHADA.md).
+
 ## Como a compatibilidade é mantida
 
 - Os desenhos originais são alvos de edição, com posições, margens e poses registradas. Não se recentralizam os quadros pelo tamanho do personagem.
@@ -27,7 +29,7 @@ O enquadramento mantém escala uniforme em Full HD, ultrawide, tablet e celular.
 - O mar conserva as grandes regiões de cor e ondas do original; a pintura gerada contribui textura e uma pequena parcela da cor. O horizonte permanece alinhado. A ondulação demonstrativa é discreta e não reproduz ainda toda a sequência de água original.
 - Índices dos quadros, posições, espelhamentos e regra de profundidade vêm das tabelas extraídas de SCRANTIC. A composição da ilha e do coqueiro usa BACKGRND.BMP; personagem e fundo usam JOHNWALK.BMP e OCEAN00.SCR.
 
-A página acompanha a atualização da tela, mas **mantém a cadência das poses originais**. Ainda não há 60 poses distintas por segundo nem interpolação entre membros. A prioridade desta revisão é corrigir fidelidade e contato com o cenário antes de criar intermediários.
+A cena principal acompanha a atualização da tela, mas **mantém a cadência das poses originais**. Os intermediários existem somente na página separada de estudo; não foram promovidos a padrão.
 
 ## Revisão e testes
 
@@ -35,7 +37,7 @@ A página acompanha a atualização da tela, mas **mantém a cadência das poses
 npm test
 ```
 
-Onze testes específicos cobrem as seis rotas, viradas, profundidade, cobertura das poses, integridade dos arquivos, frequência, enquadramento, distância ao contorno, opacidade e alinhamento dos recortes com margem. Os dez testes antigos permanecem como verificações do estudo anterior; não validam a qualidade visual desta restauração.
+Quinze testes específicos cobrem as seis rotas, viradas, profundidade, cobertura das poses, integridade dos arquivos, frequência, enquadramento, distância ao contorno, opacidade, alinhamento dos recortes com margem e as propriedades geométricas do estudo de intermediários. Os dez testes antigos permanecem como verificações do estudo anterior; não validam a qualidade visual desta restauração nem deste novo estudo.
 
 [VALIDACAO.md](VALIDACAO.md) registra observações e limites. A faixa comprova um limite de alteração do contorno, não identidade perfeita do rosto nem posicionamento exato de todo detalhe interno. A comparação visual continua necessária. Os detalhes desta revisão estão em [COMPARACAO-BORDAS.md](COMPARACAO-BORDAS.md).
 
