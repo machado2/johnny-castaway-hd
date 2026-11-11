@@ -1,5 +1,7 @@
 # Uniformização das poses laterais 5–8
 
+Registro histórico do estudo `v0.3.0-walk-study`, encerrado pelo usuário. A folha abaixo não é carregada pela cena atual, que conserva a seleção de arte e as bordas aprovadas anteriormente.
+
 Ferramenta: gerador de imagens integrado, modo de edição, fundo transparente. Sem CLI/API alternativa e sem edição posterior do PNG.
 
 Alvo: `web/dist/assets/fidelity/restored-walk-b.png`.

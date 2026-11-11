@@ -6,3 +6,4 @@
 - A interface contém somente o canvas da animação, sem emulador ou controles visíveis.
 - Adaptar o cenário ao formato da janela, inclusive ultrawide e celular, sem esticar personagens ou objetos nem cortar ações importantes.
 - Identificar claramente cenas demonstrativas e arte recriada. Não alegar equivalência com toda a história original enquanto isso não estiver implementado e verificado.
+- Manter a quantidade de quadros, poses completas, posições e cadência das animações originais. Melhorar somente o acabamento das imagens existentes. Não gerar quadros intermediários, interpolar poses nem separar o personagem em membros articulados; essas abordagens foram rejeitadas pelo usuário.

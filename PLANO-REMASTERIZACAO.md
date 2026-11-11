@@ -1,12 +1,12 @@
-# Plano de remasterização: resolução adaptável, arte nova e animação suave
+# Plano de remasterização: resolução adaptável, arte HD e quadros originais
 
-Atualização de direção em 11/11/2026: o movimento articulado do primeiro piloto foi rejeitado visualmente. O piloto atual preserva poses e tabelas originais, com restauração de acabamento também na ilha, coqueiro e mar. Novos quadros intermediários ficam para uma etapa posterior. As alternativas e o experimento estão em [Estratégias para a caminhada](ESTRATEGIAS-CAMINHADA.md). Essa revisão prevalece sobre qualquer sugestão de recriar livremente a caminhada.
+Decisão do usuário em 11/11/2026: manter somente a quantidade de quadros e a cadência do original, com cada personagem desenhado inteiro. Intermediários, interpolação de poses e animação por membros separados foram rejeitados e retirados do escopo. O piloto preserva poses e tabelas originais, com restauração de acabamento também na ilha, coqueiro e mar. A direção está em [Estratégias para a caminhada](ESTRATEGIAS-CAMINHADA.md).
 
 Plano preparado em 10/11/2026 a partir do código e dos recursos do projeto original em `../johnycastaway`. Por orientação posterior do usuário, a experiência HD passa a ter repositório independente. Este documento descreve o escopo completo futuro; o estado do piloto está documentado no README deste repositório.
 
 ## Resultado pretendido
 
-Preencher a janela em Full HD, ultrawide, telas convencionais, tablets e celulares, com cenários recriados, personagens proporcionais e animação com apresentação a 60 fps. A composição deve se adaptar à tela: ampliar as áreas de cenário e ajustar o enquadramento, sem deformar personagens nem cortar acontecimentos importantes.
+Preencher a janela em Full HD, ultrawide, telas convencionais, tablets e celulares, com cenários recriados, personagens proporcionais e animação com os quadros e a cadência original. A composição deve se adaptar à tela: ampliar as áreas de cenário e ajustar o enquadramento, sem deformar personagens nem cortar acontecimentos importantes.
 
 A remasterização usa composição adaptável; a restrição de 4:3 continua válida somente no projeto fiel ao original. As coordenadas originais podem continuar existindo internamente na futura integração da história, sem determinar a proporção da imagem apresentada.
 
@@ -35,11 +35,11 @@ Entrega: catálogo rastreável e lista de produção completa, com referências 
 
 Produzir primeiro uma amostra integrada com mar, céu, ilha, coqueiro, ondas e Johnny caminhando e realizando uma ação. Incluir oclusão atrás de um objeto, mudança de direção e um som sincronizado.
 
-Preparar referências consistentes de Johnny visto de frente, costas, perfil e diagonais, com escala, paleta e espessura de contorno definidas. Recriar os principais quadros dessa cena usando essas referências; produzir também poses intermediárias e versões em retrato e ultrawide do cenário.
+Preparar referências consistentes de Johnny visto de frente, costas, perfil e diagonais, com escala, paleta e espessura de contorno definidas. Restaurar todos os quadros existentes dessa cena, preservando suas poses completas; produzir versões em retrato e ultrawide do cenário.
 
 Comparar em movimento, no tamanho final dos dois monitores e de um celular. Verificar rosto, mãos, pés, roupa, estabilidade dos contornos, contato com o chão e encaixe entre camadas. Usar a amostra para fixar o padrão de qualidade e medir custo de produção por sequência antes de multiplicar o processo por todo o acervo.
 
-Entrega: uma cena realmente remasterizada, preenchendo os formatos escolhidos e com movimento suave. Esta é a primeira entrega visual do projeto.
+Entrega: uma cena remasterizada, preenchendo os formatos escolhidos e preservando o movimento e a quantidade de quadros original. Esta é a primeira entrega visual do projeto.
 
 ## Etapa 3 — Composição adaptável e desenho em alta resolução
 
@@ -65,35 +65,33 @@ Entrega: composição adaptável com a cena piloto e caminho de desenho preparad
 
 1. Produzir matrizes em alta resolução, em geral com 4× a dimensão linear original, chegando a 8× onde o enquadramento ou telas 4K exigirem. Fundos extensíveis terão dimensões próprias; o fator de escala dos sprites não limita a largura total do cenário.
 2. Usar as imagens originais e as referências visuais já estabelecidas para orientar a recriação. Ferramentas de geração/edição podem ajudar na produção, com revisão de sequência inteira para corrigir variações de identidade, roupa, iluminação e proporções.
-3. Recriar poses principais antes dos intermediários. Preservar apoios, silhuetas e momentos expressivos responsáveis pela leitura da ação.
+3. Restaurar somente as poses existentes, como desenhos completos. Preservar apoios, silhuetas e momentos expressivos responsáveis pela leitura da ação.
 4. Produzir transparência real e margens que impeçam halos nas bordas. Registrar pivôs, recortes, deslocamentos e tamanho lógico para evitar tremidas entre quadros de dimensões diferentes.
 5. Exportar variantes menores a partir das matrizes, em pacotes por cena. Usar formatos com transparência e verificar o resultado visual da compressão; preservar matrizes sem perda.
 6. Completar o inventário até alcançar todas as 2.402 referências válidas, os elementos desenhados pelo motor e os novos trechos de cenário.
 
 Ordem de produção: cenário recorrente e caminhada; ações cotidianas; interações e personagens secundários; capítulos da história; ambientes especiais, datas comemorativas, introdução e encerramento.
 
-Entrega: acervo completo com associação explícita entre recursos originais, arte nova e versões de resolução. A quantidade de novas poses será definida pela duração e complexidade dos movimentos, sem multiplicar todos os quadros indiscriminadamente.
+Entrega: acervo completo com associação explícita entre recursos originais, arte nova e versões de resolução. A quantidade de poses de animação permanece igual à original.
 
-## Etapa 5 — Movimento a 60 fps com o ritmo original
+## Etapa 5 — Apresentação estável com os quadros originais
 
-Separar o relógio da história da apresentação. Preservar inicialmente os passos lógicos existentes e seus efeitos; avaliar os movimentos visuais pelo tempo transcorrido entre eles. requestAnimationFrame acompanha normalmente a taxa da tela, e a progressão deve usar tempo para não acelerar em monitores de alta frequência: [MDN](https://developer.mozilla.org/en-US/docs/Web/API/Window/requestAnimationFrame).
+Separar o relógio da história da apresentação. Preservar os passos lógicos existentes e seus efeitos. A atualização da tela não deve alterar o índice da imagem, a posição ou a duração de nenhum quadro original.
 
-- Interpolar deslocamentos contínuos, como caminhada, nuvens e objetos em movimento, com posições fracionárias.
-- Criar quadros intermediários de pose para mudanças corporais; executar o mesmo desenho mais vezes não acrescenta movimento ao personagem.
-- Animar ondas e outros ciclos ambientais com continuidade, preservando a composição e a direção artística.
-- Associar os novos movimentos à identidade de cada ator e à fase da sequência original. Usar curvas e transições específicas; não interpolar entre cortes, trocas de cena ou poses sem relação.
-- Manter pausas intencionais, acelerações, antecipações e impactos. A duração total das ações e os pontos de sincronização devem permanecer equivalentes à referência.
-- Evitar dissolver um personagem sobre a próxima pose, o que cria imagens duplas. Intermediários gerados automaticamente precisam de correção de anatomia, oclusões e contato com objetos.
-- Desenhar os quadros adicionais sem executar novamente sons, sorteios, avanço da história ou alterações persistentes. Se a interpolação usar um pequeno atraso de apresentação, compensar o áudio pelo mesmo valor.
+- Exibir a pose inteira até o instante do próximo quadro original, mantendo também sua posição.
+- Preservar a quantidade de imagens e os tempos próprios de cada ação, inclusive pausas, viradas, antecipações e impactos.
+- Restaurar os ciclos ambientais existentes com a mesma sequência de referência.
+- Não deformar poses, dividir personagens em membros, criar intermediários ou dissolver um desenho no seguinte.
+- Executar sons, sorteios, avanço da história e alterações persistentes somente nos eventos originais, sem repetições por atualização da tela.
 - Pausar quando a página estiver oculta e retomar sem acelerar a história.
 
-Meta principal: apresentação estável a 60 fps nos dois monitores e em aparelhos móveis capazes. Em aparelhos limitados, ajustar resolução e efeitos decorativos; permitir 30 fps estáveis quando necessário. Telas de 90/120/144 Hz devem manter a mesma velocidade da história; maior taxa visual será uma melhoria posterior ao fechamento dos 60 fps.
+Evitar atrasos além da cadência original nos dois monitores e nos aparelhos móveis testados. Em aparelhos limitados, ajustar resolução e efeitos decorativos. Telas de 60/90/120/144 Hz devem manter as mesmas poses, posições e duração da história; a frequência do canvas não representa novos desenhos de animação.
 
-Entrega: movimentos intermediários visíveis, cadência consistente e eventos preservados.
+Entrega: quadros originais com acabamento HD, cadência e eventos preservados.
 
 ## Etapa 6 — Carregamento e memória
 
-As imagens atuais somam 9.814.936 pixels. Todas abertas simultaneamente em RGBA e ampliadas 4× em cada dimensão ocupariam aproximadamente 599 MiB; em 8×, aproximadamente 2,34 GiB. Esses números não incluem novos quadros, atlas, buffers ou cópias no navegador.
+As imagens atuais somam 9.814.936 pixels. Todas abertas simultaneamente em RGBA e ampliadas 4× em cada dimensão ocupariam aproximadamente 599 MiB; em 8×, aproximadamente 2,34 GiB. Esses números não incluem extensões do cenário, atlas, buffers ou cópias no navegador.
 
 Carregar a qualidade adequada e somente os pacotes da cena atual e das próximas cenas prováveis. Liberar imagens e texturas antigas com cache limitado; carregar e decodificar o próximo pacote antes da transição. Separar cenário compartilhado dos pacotes de personagens para não duplicar recursos.
 
@@ -127,15 +125,15 @@ Os tamanhos de desktop são metas de saída física. No celular, testar também 
 - Tela preenchida com cenário, personagens proporcionais e ações essenciais visíveis nos formatos de teste. Sem barras impostas por uma moldura fixa em 4:3.
 - Sem saltos de pivô, halos, tremidas de identidade, membros deformados, imagens duplas ou objetos atravessando camadas incorretamente.
 - Mesma duração lógica, ordem de eventos, sons únicos e progressão salva, comparadas com a referência determinística. Não exigir igualdade de pixels entre arte antiga e nova.
-- Meta de 60 fps sustentada nos dois monitores, com tempo de quadro e engasgos registrados; desempenho móvel comprovado nos aparelhos testados e adaptação funcional nos demais cenários simulados.
+- Cadência original preservada nos dois monitores, sem atrasos adicionais; desempenho móvel comprovado nos aparelhos testados e adaptação funcional nos demais cenários simulados. Registrar separadamente a frequência do canvas e as trocas de pose.
 - Executar os testes de gráficos, TTM, ADS e história existentes e acrescentar verificações de transformações, eventos, cobertura de recursos e composição. Rever as expectativas que dependem do renderizador original sem enfraquecer as garantias de comportamento.
 - Revisar gravações das sequências e imagens em tamanhos finais, incluindo troca de monitor, rotação, redimensionamento, perda de contexto gráfico e retomada após ocultar a página.
 - Conservar execução local e manter o projeto original intacto. Uma eventual publicação HD deve usar destino separado do site original.
 
 ## Ordem de execução e estimativa
 
-Executar catálogo → referências visuais → cena piloto → composição/renderizador HD → produção por famílias + novos movimentos → otimização → revisão integral → publicação.
+Executar catálogo → referências visuais → cena piloto → composição/renderizador HD → restauração dos quadros por família → otimização → revisão integral → publicação.
 
-O piloto deve estabelecer o tempo real para criar, corrigir e revisar uma sequência, o número necessário de intermediários e o tamanho dos pacotes. Só então estimar o trabalho restante por complexidade de cena. O maior esforço previsto é a produção consistente da arte e dos movimentos; a adaptação das dimensões do canvas é uma parcela menor.
+O piloto deve estabelecer o tempo real para restaurar, corrigir e revisar os quadros existentes de uma sequência e o tamanho dos pacotes. Só então estimar o trabalho restante por complexidade de cena. O maior esforço previsto é a produção consistente da arte; a adaptação das dimensões do canvas é uma parcela menor.
 
 Para a futura integração da história, as responsabilidades de `main.js`, `graphics.js`, `ttm.js`, `story.js`, `ads.js`, `tools/export_web.py` e dos verificadores do repositório original orientam a separação de lógica e apresentação. Essa implementação deverá acontecer neste repositório HD. Criar exportação separada para o acervo HD, para que regenerar a extração dos originais não sobrescreva a arte produzida.

@@ -25,7 +25,7 @@ Data: 11/11/2026. Windows, navegador interno baseado em Chromium. Esta revisão 
 
 Amostras dos últimos 300 intervalos após aproximadamente 29, 39 e 41 segundos de execução. O ajuste posterior do céu foi revisto visualmente e não teve nova medição de desempenho. O tempo JS não mede todo o trabalho de GPU/composição. Nenhum erro ou aviso de página foi registrado nos cenários medidos.
 
-Esses números são a frequência de apresentação do canvas. **As poses e os deslocamentos ainda seguem a cadência original**, sem 60 desenhos novos por segundo, interpolação ou dissolução. A próxima etapa de fluidez precisa criar intermediários mantendo apoio dos pés e ordem dos membros.
+Esses números são a frequência de apresentação do canvas. **As poses e os deslocamentos seguem a cadência original**, sem 60 desenhos novos por segundo, interpolação ou dissolução. Após a rejeição dos experimentos posteriores, o usuário decidiu manter somente a quantidade de quadros do original; a criação de intermediários foi retirada do escopo.
 
 A matriz automatizada vai de 320×568 a 5120×1440 e inclui 4K, retrato, paisagem e densidades fracionárias. As três áreas da tabela também foram inspecionadas visualmente. Não foram testados telefone físico, Safari/iOS, bateria ou sessões prolongadas.
 

@@ -18,7 +18,7 @@ A [comparação de bordas A/B/C](http://127.0.0.1:4174/?view=edges) mostra o rec
 
 O enquadramento mantém escala uniforme em Full HD, ultrawide, tablet e celular. Só o fundo ocupa a área adicional; ilha, personagem e objetos não são esticados. A animação pausa quando a página fica oculta.
 
-O [estudo da caminhada lateral](http://127.0.0.1:4174/walk-study.html) compara os pixels originais com uma caminhada contínua, em câmera fixa. Os pés mantêm apoio no chão, as pernas preservam sua identidade no cruzamento e a pintura não troca durante o passo. Há [câmera lenta](http://127.0.0.1:4174/walk-study.html?speed=slow) e [oito fases do ciclo](http://127.0.0.1:4174/walk-study.html?view=phases&t=0). O movimento permanece separado da cena principal. A gravação teve baixa frequência nesta sessão e a revisão em primeiro plano ficou pendente; veja evidências e limites em [ESTUDO-CAMINHADA.md](ESTUDO-CAMINHADA.md).
+Por decisão do usuário, a restauração mantém somente os quadros completos e a cadência original. Os experimentos de interpolação e membros separados foram encerrados. O endereço antigo `walk-study.html` agora abre esta mesma cena, com o acabamento e as bordas já aprovados. O registro dessa decisão está em [ESTUDO-CAMINHADA.md](ESTUDO-CAMINHADA.md).
 
 ## Como a compatibilidade da cena principal é mantida
 
@@ -29,7 +29,7 @@ O [estudo da caminhada lateral](http://127.0.0.1:4174/walk-study.html) compara o
 - O mar conserva as grandes regiões de cor e ondas do original; a pintura gerada contribui textura e uma pequena parcela da cor. O horizonte permanece alinhado. A ondulação demonstrativa é discreta e não reproduz ainda toda a sequência de água original.
 - Índices dos quadros, posições, espelhamentos e regra de profundidade vêm das tabelas extraídas de SCRANTIC. A composição da ilha e do coqueiro usa BACKGRND.BMP; personagem e fundo usam JOHNWALK.BMP e OCEAN00.SCR.
 
-A cena principal acompanha a atualização da tela, mas **mantém a cadência das poses originais**. Os intermediários existem somente na página separada de estudo; não foram promovidos a padrão.
+A apresentação acompanha a atualização da tela, mas **mantém a quantidade de quadros e a cadência das poses originais**. Cada quadro mostra o personagem inteiro, sem articulação por partes, interpolação ou dissolução entre poses.
 
 ## Revisão e testes
 
@@ -37,7 +37,7 @@ A cena principal acompanha a atualização da tela, mas **mantém a cadência da
 npm test
 ```
 
-Dezessete testes específicos cobrem as seis rotas, viradas, profundidade, cobertura das poses, integridade dos arquivos, enquadramento, contornos, opacidade, alinhamento e propriedades do novo ciclo contínuo, incluindo apoio dos pés e ausência de saltos de posição. Os dez testes antigos permanecem como verificações do primeiro piloto; não validam a qualidade visual desta restauração nem do novo estudo.
+Onze testes específicos cobrem as seis rotas, viradas, profundidade, cobertura das poses, integridade dos arquivos, enquadramento, contornos, opacidade, alinhamento e preservação da cadência original. Os dez testes antigos permanecem como verificações do primeiro piloto; não validam a qualidade visual desta restauração.
 
 [VALIDACAO.md](VALIDACAO.md) registra observações e limites. A faixa comprova um limite de alteração do contorno, não identidade perfeita do rosto nem posicionamento exato de todo detalhe interno. A comparação visual continua necessária. Os detalhes desta revisão estão em [COMPARACAO-BORDAS.md](COMPARACAO-BORDAS.md).
 

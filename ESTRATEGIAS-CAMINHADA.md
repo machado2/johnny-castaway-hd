@@ -1,52 +1,25 @@
 # Caminhada HD fiel aos quadros originais
 
-Revisão de direção em 11/11/2026, após a avaliação do piloto pelo usuário. O experimento de restauração foi implementado depois desta análise: poses e percursos extraídos, edição conservadora, transparência guiada pela silhueta original e comparação sincronizada. O estado e os limites estão no README e em VALIDACAO.md. O primeiro teste de intermediários foi rejeitado por saltos e deslizamento; sua substituição por pintura em camadas, guias originais e contato fixo dos pés está documentada em ESTUDO-CAMINHADA.md. A cena principal continua com a cadência original.
+Direção definida pelo usuário em 11/11/2026: manter somente os quadros completos e a cadência do original. Encerrar interpolação, geração de intermediários e animação de membros separados. Essas tentativas foram rejeitadas visualmente, inclusive depois das verificações geométricas. Testes de apoio ou apresentação a 60 Hz não demonstram qualidade artística da passada.
 
-## Diagnóstico
+## Referência
 
-O piloto passou a usar um torso fixo, membros articulados e um percurso autoral. O contato dos pés com o solo foi melhorado, mas isso não reproduz as poses, deformações expressivas, balanço do corpo e viradas do original. Medir 60 fps ou testar o comprimento das pernas não demonstra qualidade artística da caminhada.
+A folha JOHNWALK.BMP extraída contém 36 imagens, incluindo direções e viradas. Não é um ciclo único em ordem numérica. Índices, posições, espelhamentos e tempos das tabelas extraídas devem conduzir a animação HD.
 
-A folha JOHNWALK.BMP extraída contém 36 imagens, incluindo diferentes direções e viradas. Não é um ciclo único em ordem numérica. O projeto original já usa tabelas com índice da imagem, posição x/y, espelhamento e rotas, além de tempos próprios. Essas informações devem conduzir a animação HD.
+A melhoria desejada é de acabamento: editar cada imagem inteira, preservando a posição de cada membro e objeto, quase como um filtro. A edição não deve redesenhar a pose nem usar membros articulados para substituí-la.
 
-Direção proposta: melhorar o acabamento dos quadros existentes, preservando a posição de cada membro e objeto. Tratar cada original como imagem a editar, não apenas referência livre para desenhar outra pose.
+## Produção e revisão
 
-## Estratégias a comparar
+1. Extrair a sequência e registrar índices, posições, durações, transparência e margens.
+2. Melhorar contornos, cores e sombras dos quadros existentes, usando cada original como alvo da edição.
+3. Preservar a escala e o ponto de desenho de cada quadro. Não recentralizar pelo tamanho aparente do personagem.
+4. Aplicar o tratamento de bordas aprovado e revisar os espaços entre membros e objetos.
+5. Comparar a sequência completa com o original. Rejeitar alterações de pose, identidade, volume, transparência ou sobreposição e corrigir somente as imagens que falharem.
 
-| Estratégia | Vantagem para este projeto | Limitação |
-|---|---|---|
-| Ampliação não generativa com acabamento de bordas e paleta uniforme | Referência de máxima estabilidade: mantém a estrutura e não inventa anatomia | Pode continuar com aspecto de pixel art ampliada; não recupera detalhes inexistentes |
-| Edição conservadora de cada quadro pelo gerador de imagens | Permite contornos, cores e sombras mais bem resolvidos usando o original como alvo | O pedido em texto não garante coordenadas exatas; rosto, roupa, dedos e proporções podem variar entre quadros |
-| Restauração guiada por contornos, silhuetas e pontos de referência | Dá controle estrutural adicional à edição generativa | Exige uma ferramenta que exponha esses controles; o gerador integrado atual não oferece um bloqueio geométrico verificável. Não prometer fidelidade absoluta |
-| Ampliação da sequência considerando quadros vizinhos | Usa informação temporal, em vez de restaurar imagens isoladas | Precisa ser avaliada neste material pequeno e estilizado; métodos de vídeo não vêm automaticamente validados para sprites com transparência |
-| Redesenho por traçado sobre os quadros originais | Controle direto de cada contorno, pose e sobreposição | Trabalho maior por quadro; útil para corrigir exceções onde a geração não preserve o desenho |
+O gerador integrado não garante um bloqueio geométrico apenas por instrução textual. A tolerância de contorno e a inspeção visual continuam necessárias. Detalhes novos são interpretações de acabamento, não informação recuperada do original.
 
-Uma pequena folha com vários quadros também pode ser testada na edição generativa para compartilhar aparência. Isso não garante consistência e pode deslocar os quadros ou misturar poses. Não enviar as 36 imagens pequenas de uma vez como única tentativa. Comparar com edição individual e a mesma referência de acabamento.
+## Apresentação
 
-Referências gerais de técnica, sem uso de outras reimplementações do jogo:
+A tela pode atualizar em 60, 120 ou 144 Hz, mas a imagem e sua posição permanecem as mesmas até o próximo quadro original. Não adicionar movimento entre eles por deformação, deslocamento independente, dissolução ou rig de membros. Os mesmos princípios se aplicam às demais ações conforme forem restauradas.
 
-- [ControlNet](https://arxiv.org/abs/2302.05543): condicionamento espacial por bordas, segmentação e pose.
-- [BasicVSR](https://arxiv.org/abs/2012.02181): ampliação de vídeo com alinhamento e propagação de informação temporal.
-- [RIFE](https://github.com/hzwer/ECCV2022-RIFE): interpolação de imagens entre instantes; candidato experimental para uma fase posterior, sem garantia de preservar pés cruzados ou objetos finos.
-
-## Experimento recomendado
-
-1. Escolher um trecho curto de caminhada lateral e reconstruí-lo com os índices, posições, espelhamentos e tempos das tabelas extraídas. Incluir apoio, cruzamento das pernas, chegada à parada e a transição de direção. Guardar os quadros e a sequência de referência.
-2. Preparar uma ampliação conservadora como controle e uma versão de edição generativa dos mesmos quadros. A geração deve preservar pose, silhueta, escala relativa, expressão, roupa, objetos e transparência, alterando somente acabamento. Detalhes novos são interpretações, não recuperação comprovada de informação perdida.
-3. Manter o sistema de coordenadas original. Ampliar as posições e margens pelo mesmo fator, sem recentralizar ou ajustar cada desenho automaticamente pelo seu recorte: isso apagaria o balanço original e criaria tremidas.
-4. Comparar original ampliado e candidatos lado a lado, com o mesmo relógio, tamanho e percurso. Sobrepor os contornos para verificar deslocamentos de cabeça, quadril, joelhos, calcanhares, pontas dos pés e objetos. Avaliar também em reprodução lenta e velocidade normal.
-5. Rejeitar quadros com mudança de pose, variação de identidade, membro trocado, alterações de volume ou transparência, ou que mudem de estilo entre imagens. Corrigir só os quadros que falharem; não avançar para o catálogo completo com um ciclo inconsistente.
-6. Selecionar a abordagem pela fidelidade em movimento. Somente depois integrar a caminhada revisada à cena HD. O piloto atual fica como referência descartada de movimento, não como padrão a refinar indefinidamente.
-
-## Mais fluidez: uma etapa separada
-
-Primeiro preservar os quadros, durações e posições originais. Apresentar em 60 Hz não cria novas poses e não garante uma passada melhor.
-
-Depois, testar intermediários entre poses consecutivas aprovadas, mantendo intactos os quadros originais e os instantes de contato. Avaliar interpolação automática e correção por traçado; não usar dissolução entre dois corpos. O pé de apoio, a ordem de sobreposição das pernas e os objetos segurados são restrições específicas da transição.
-
-Deslocamento do corpo e mudança de pose precisam ser tratados juntos. Suavizar só a translação enquanto se segura um quadro pode fazer os pés deslizarem. Não interpolar por cima de cortes ou converter pausas intencionais em movimento contínuo.
-
-## Cenário e formatos de tela
-
-Aplicar o mesmo princípio de conservação à ilha, árvore e objetos: manter contornos e relações espaciais, melhorando o acabamento. O oceano animado também precisa ser revisto como sequência, não apenas como pintura estática bonita.
-
-Preservar uma área central de ação com escala uniforme. Para ultrawide, estender principalmente mar e céu nas laterais; para retrato, ajustar o enquadramento e ampliar céu/mar conforme necessário. Não remodelar a ilha para preencher cada proporção. Todo experimento permanece no repositório HD, sem modificar o original publicado.
+O trabalho seguinte se concentra na qualidade e cobertura da arte existente e na adaptação do cenário às resoluções. Os experimentos encerrados estão registrados em [ESTUDO-CAMINHADA.md](ESTUDO-CAMINHADA.md).

@@ -1,5 +1,7 @@
 # Camadas da caminhada contínua
 
+Registro histórico de uma abordagem rejeitada pelo usuário. O arquivo em partes e seu renderizador foram retirados da versão atual; os caminhos abaixo referem-se à tag `v0.4.0-continuous-walk`. Não retomar essa técnica.
+
 Modo: gerador de imagens integrado, edição com fundo transparente. Entrada: `web/dist/assets/fidelity/restored-walk-a.png`. Saída selecionada: `exec-c321f091-b4bc-43b0-9b3c-546b38e15c68.png`, copiada integralmente como `web/dist/assets/fidelity/walk-layers-v1.png` (1254×1254).
 
 O gerador separou a pintura em quatro partes. A posição não saiu perfeitamente registrada: o renderizador aplica pequenas translações medidas contra a pose de referência. A separação não é uma garantia de fidelidade pixel a pixel. Não houve retoque raster posterior do arquivo gerado.
